@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+
+<head>
+    {% block metadata %}
+        {% include "admin::partials/metadata" %}
+    {% endblock %}
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+    {{ asset('plugins/font-awesome/css/font-awesome.min.css')|css_tag }}
+    {{ asset('plugins/simple-line-icons/simple-line-icons.min.css')|css_tag }}
+    {{ asset('plugins/bootstrap/css/bootstrap.min.css')|css_tag }}
+    {{ asset('plugins/bootstrap-switch/css/bootstrap-switch.min.css')|css_tag }}
+    {{ asset('plugins/font-awesome/css/font-awesome.min.css')|css_tag }}
+
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    {{ theme_asset('admin::css/components.css')|css_tag }}
+    {{ theme_asset('admin::css/plugins.css')|css_tag }}
+    <!-- END THEME GLOBAL STYLES -->
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    {{ theme_asset('admin::css/pages/login-4.min.css')|css_tag }}
+    <!-- END PAGE LEVEL STYLES -->
+    <!-- BEGIN THEME LAYOUT STYLES -->
+    <!-- END THEME LAYOUT STYLES -->
+    <link rel="shortcut icon" href="favicon.ico" /> </head>
+<!-- END HEAD -->
+
+<body class="login">
+<!-- BEGIN LOGO -->
+<div class="logo"style="margin-top:10px;">
+    <h3><strong>My</strong><i>Invitation</i></h3>
+</div>
+<!-- END LOGO -->
+<!-- BEGIN LOGIN -->
+
+<!-- BEGIN LOGIN -->
+<div class="content">
+    <!-- BEGIN LOGIN FORM -->
+    <form class="login-form" action="{{ route('register_act') }}" method="post">
+        {{ csrf_field() }}
+
+        <h3 class="form-title">Register</h3>
+        <div class="alert alert-danger display-hide">
+            <button class="close" data-close="alert"></button>
+            <span> Enter any username and password. </span>
+        </div>
+
+        {% if(session('scsMsg')) %}
+            <div class="alert alert-success">
+                <button class="close" data-close="alert"></button>
+                <span>{{ session('scsMsg') }}</span>
+            </div>
+        {% endif %}
+
+
+        {% if errors.any %}
+            {% for error in errors.all %}
+                <div class="alert alert-danger">
+                    <button class="close" data-close="alert"></button>
+                    <span>{{ error }}</span>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">Nama</label>
+            <div class="input-icon">
+                <i class="fa fa-user"></i>
+                <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Nama Lengkap" name="name" id="name"  value="{{ old('name') }}"/> </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">Email</label>
+            <div class="input-icon">
+                <i class="fa fa-user"></i>
+                <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email" id="email"  value="{{ old('email') }}"/> </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">Password</label>
+            <div class="input-icon">
+                <i class="fa fa-lock"></i>
+                <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password" id="password" /> </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">Re-type</label>
+            <div class="input-icon">
+                <i class="fa fa-lock"></i>
+                <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Ketik ulang" name="password_confirmation" id="password_confirmation" /> </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn green pull-right"> Login </button>
+        </div>
+        <div class="create-account">
+            <p> Don't have an account yet ?&nbsp;
+                <a href="{{ route('login') }}"> Punya akun? </a>
+            </p>
+        </div>
+    </form>
+
+    <!-- END LOGIN FORM -->
+</div>
+
+
+
+<div class="copyright hide"> 2017 © {{ config('app.name')}}</div>
+
+
+
+
+
+
+<!--[if lt IE 9]>
+{{ asset('plugins/respon.min.js')|script_tag }}
+{{ asset('plugins/excanvas.min.js')|script_tag }}
+{{ asset('plugins/ie8.fix.min.js')|script_tag }}
+<![endif]-->
+
+<!-- BEGIN CORE PLUGINS -->
+{{ asset('plugins/jquery.min.js')| script_tag }}
+{{ asset('plugins/bootstrap/js/bootstrap.min.js')| script_tag }}
+{{ asset('plugins/js.cookie.min.js')| script_tag }}
+{{ asset('plugins/jquery-slimscroll/jquery.slimscroll.min.js')| script_tag }}
+{{ asset('plugins/jquery.blockui.min.js')| script_tag }}
+{{ asset('plugins/bootstrap-switch/js/bootstrap-switch.min.js')| script_tag }}
+<!-- END CORE PLUGINS -->
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+{{ asset('plugins/jquery-validation/js/jquery.validate.min.js')| script_tag }}
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN THEME GLOBAL SCRIPTS -->
+{{ asset('plugins/backstretch/jquery.backstretch.min.js')| script_tag }}
+<!-- END THEME GLOBAL SCRIPTS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+{{ theme_asset('admin::js/app.min.js')| script_tag }}
+{{ theme_asset('admin::js/pages/login-4.min.js')| script_tag }}
+<!-- END PAGE LEVEL SCRIPTS -->
+<!-- BEGIN THEME LAYOUT SCRIPTS -->
+<!-- END THEME LAYOUT SCRIPTS -->
+</body>
+
+</html>

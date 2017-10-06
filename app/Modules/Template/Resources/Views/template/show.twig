@@ -1,0 +1,207 @@
+{% extends "admin::layouts.layout" %}
+
+{% block addcss %}
+
+    {{ asset('plugins/select2/css/select2.min.css') | css_tag }}
+    {{ asset('plugins/select2/css/select2-bootstrap.min.css') | css_tag }}
+
+    {{ asset('plugins/bootstrap-toastr/toastr.min.css') | css_tag }}
+
+
+{% endblock %}
+
+{% block pageheader %}
+    <!-- BEGIN PAGE HEAD-->
+    <div class="page-head">
+        <div class="container">
+            <!-- BEGIN PAGE TITLE -->
+            <div class="page-title">
+                <h1>{{ string_menuname }}
+                    <small>{{ string_active_menu }}</small>
+                </h1>
+            </div>
+            <!-- END PAGE TITLE -->
+        </div>
+    </div>
+    <!-- END PAGE HEAD-->
+
+{% endblock %}
+
+
+{% block breadcrumbs %}
+    <!-- BEGIN PAGE BREADCRUMBS -->
+    <ul class="page-breadcrumb breadcrumb">
+        <li>
+            <a href="{{ url('/home') }}">Home</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a href="javascript:void(0)">{{ string_menuname }}</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            {{ string_active_menu }}
+        </li>
+    </ul>
+    <!-- END PAGE BREADCRUMBS -->
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN VALIDATION STATES-->
+            <div class="portlet light portlet-fit portlet-form bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-wrench font-green"></i>
+                        <span class="caption-subject font-green bold uppercase">Pilih template </span>
+                    </div>
+                    <div class="actions">
+                        <a href="{{ route('wedding_bridesmaid_show', WebsiteID) }}" class="btn btn-info btn-circle" name="btn" value="Nex"><i class="fa fa-reply"></i> Kembali</a>
+                        {#<a href="{{ route('', WebsiteID) }}" class="btn btn-success btn-circle" name="btn" value="Nex"><i class="fa fa-share"></i> Selanjutnya</a>#}
+                    </div>
+
+                </div>
+                <div class="portlet-body">
+                    {% if (session('ScsMsg')) %}
+                        <div class="alert alert-success">
+                            <button class="close" data-close="alert"></button>
+                            <span>{{ session('ScsMsg') }}</span>
+                        </div>
+                    {% endif %}
+
+                    {% if (session('ErrMsg')) %}
+                        <div class="alert alert-danger">
+                            <button class="close" data-close="alert"></button>
+                            <span>{{ session('ErrMsg') }}</span>
+                        </div>
+                    {% endif %}
+
+                    {% if (session('WrngMsg')) %}
+                        <div class="alert alert-warning">
+                            <button class="close" data-close="alert"></button>
+                            <span>{{ session('WrngMsg') }}</span>
+                        </div>
+                    {% endif %}
+
+                    {% if (session('InfoMsg')) %}
+                        <div class="alert alert-info">
+                            <button class="close" data-close="alert"></button>
+                            <span>{{ session('InfoMsg') }}</span>
+                        </div>
+                    {% endif %}
+
+                    <div class="mt-element-step">
+                        <div class="row step-line">
+                            <div class="col-md-2 mt-step-col first done">
+                                <div class="mt-step-number bg-white">1</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Wedding Info</div>
+                                <div class="mt-step-content font-grey-cascade">Lengkapi data pernikahan</div>
+                            </div>
+                            <div class="col-md-2 mt-step-col done">
+                                <div class="mt-step-number bg-white">2</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Gallery Image</div>
+                                <div class="mt-step-content font-grey-cascade">Upload Foto Pre-wedding</div>
+                            </div>
+                            <div class="col-md-2 mt-step-col done">
+                                <div class="mt-step-number bg-white">3</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Story of Love</div>
+                                <div class="mt-step-content font-grey-cascade">Moment kesayangan</div>
+                            </div>
+                            <div class="col-md-2 mt-step-col done">
+                                <div class="mt-step-number bg-white">4</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Bridesmaid</div>
+                                <div class="mt-step-content font-grey-cascade">Informasi Pendamping</div>
+                            </div>
+                            <div class="col-md-2 mt-step-col active">
+                                <div class="mt-step-number bg-white">5</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Template</div>
+                                <div class="mt-step-content font-grey-cascade">Pilih Template Website</div>
+                            </div>
+                            <div class="col-md-2 mt-step-col last">
+                                <div class="mt-step-number bg-white">6</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Finish</div>
+                                <div class="mt-step-content font-grey-cascade">Siap disebarkan</div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <!-- BEGIN FORM-->
+                    <form action="{{ route('wedding_template_action') }}" name="form_wedding_template" id="form_wedding_template" class="form-horizontal" method="post">
+                        {{ csrf_field() }}
+                        <div class="form-body">
+                            <hr>
+                            <!-- PARAM -->
+                            <input type="hidden" name="website_id" id="website_id" value="{{ WebsiteID }}">
+
+                            <!-- TEMPLATE -->
+                            <div class="form-group {% if (errors.has('template')) %}has-error{% endif %}" id="row-template">
+                                <label class="control-label col-md-3">Template
+                                    <span class="required"> * </span>
+                                </label>
+                                <div class="col-md-5">
+                                    <select name="template" class="form-control select2" id="template">
+                                        {% set ListTemplate = call_helpers('get_ListTemplate') %}
+                                        {% for key,value in ListTemplate %}
+                                            <option value="{{ key }}" {{ Website.template_id == key ? 'selected="selected"' : ''}}>{{ value }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    {% if (errors.has('template')) %}<span class="help-block"> {{ errors.first('template') }} </span>{% endif %}
+                                </div>
+                            </div>
+                            <!-- END TEMPLATE -->
+
+                            <div id="loadTemplate">
+                            </div>
+
+                        </div>
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-9">
+                                        <button type="button" class="btn btn-info" name="btn" value="Preview" id="btn-PreviewTemplate"><i class="fa fa-save"></i> Lihat Demo</button>
+                                        <button type="submit" class="btn btn-success" name="btn" value="Save"><i class="fa fa-save"></i> Simpan & Selesai</button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </form>
+                    <!-- END FORM-->
+                </div>
+                <!-- END VALIDATION STATES-->
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block addmodal %}
+
+{% endblock %}
+
+{% block addjs %}
+    <!-- VALIDATION -->
+    {{ asset('plugins/jquery-validation/js/jquery.validate.min.js') | script_tag }}
+    {{ asset('plugins/jquery-validation/js/additional-methods.min.js') | script_tag }}
+    {{ asset('modules/template/validate.js') | script_tag }}
+
+
+    <!-- NOTIFICATION -->
+    {{ asset('plugins/bootstrap-toastr/toastr.min.js')|  script_tag }}
+
+    <!-- DROPDOWN -->
+    {{ asset('plugins/select2/js/select2.full.min.js') | script_tag }}
+
+    <!-- JS SELECT2 -->
+    {{ asset('js/select2/select2.js') | script_tag }}
+
+    <!-- JS -->
+    {{ asset('modules/template/main.js') | script_tag }}
+
+
+
+
+
+{% endblock %}

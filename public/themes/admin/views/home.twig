@@ -1,0 +1,129 @@
+{% extends "admin::layouts.layout" %}
+
+{% block css_assets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block pageheader %}
+
+<!-- BEGIN PAGE HEAD-->
+<div class="page-head">
+    <div class="container">
+        <!-- BEGIN PAGE TITLE -->
+        <div class="page-title">
+            <h1>Home
+                <small>Home</small>
+            </h1>
+        </div>
+        <!-- END PAGE TITLE -->
+    </div>
+</div>
+<!-- END PAGE HEAD-->
+
+{% endblock %}
+
+
+{% block breadcrumbs %}
+<!-- BEGIN PAGE BREADCRUMBS -->
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="{{ url('/') }}">Home</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <span>Home</span>
+    </li>
+</ul>
+<!-- END PAGE BREADCRUMBS -->
+{% endblock %}
+
+
+{% block addjs %}
+    {{ asset('plugins/datatables/datatables.min.js')|script_tag }}
+    {{ asset('plugins/datatables/plugins/bootstrap/datatables.bootstrap.js')|script_tag }}
+
+    {{ asset('plugins/counterup/jquery.waypoints.min.js')| script_tag }}
+    {{ asset('plugins/counterup/jquery.counterup.min.js')| script_tag }}
+
+    <!-- {{ asset('plugins/amcharts/amcharts/amcharts.js')| script_tag }}
+    {{ asset('plugins/amcharts/amcharts/serial.js')| script_tag }}
+    {{ asset('plugins/amcharts/amcharts/pie.js')| script_tag }}
+    {{ asset('plugins/amcharts/amcharts/radar.js')| script_tag }}
+    {{ asset('plugins/amcharts/amcharts/themes/light.js')| script_tag }}
+    {{ asset('plugins/amcharts/amcharts/themes/patterns.js')| script_tag }}
+    {{ asset('plugins/amcharts/amcharts/themes/chalk.js')| script_tag }} -->
+    <script>
+    // var DATA = JSON.parse('{{ call_helpers('set_json_encode', DataLastWeek) }}');
+    </script>
+
+    {{ asset('modules/dashboard.js')| script_tag }}
+
+{% endblock %}
+
+{% block body %}
+
+<!-- <div class="row">
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="dashboard-stat2 ">
+            <div class="display">
+                <div class="number">
+                    <h3 class="font-green-sharp">
+                        <small class="font-green-sharp">Rp</small>
+                        <span data-counter="counterup" data-value="{{ TransactionDebitTodayInMyBranch }}">0</span>
+                    </h3>
+                    <small>TOTAL INCOME</small>
+                </div>
+                <div class="icon">
+                    <i class="fa fa-money"></i>
+                </div>
+            </div>
+            <div class="progress-info">
+                <div class="status">
+                    <div class="status-title"> {{ Branch }} </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="dashboard-stat2 ">
+            <div class="display">
+                <div class="number">
+                    <h3 class="font-red-haze">
+                        <span data-counter="counterup" data-value="{{ CountTransactionInBranchToday }}">0</span>
+                    </h3>
+                    <small>TOTAL TRANSACTION</small>
+                </div>
+                <div class="icon">
+                    <i class="icon-basket"></i>
+                </div>
+            </div>
+            <div class="progress-info">
+                <div class="status">
+                    <div class="status-title"> On {{ call_helpers('get_DateNow','l, d F Y') }} </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="dashboard-stat2 ">
+            <div class="display">
+                <div class="number">
+                    <h3 class="font-blue-sharp">
+                        <span data-counter="counterup" data-value="{{ CountNewCustomerTodayInBranch }}">0</span>
+                    </h3>
+                    <small>NEW CUSTOMER</small>
+                </div>
+                <div class="icon">
+                    <i class="icon-user"></i>
+                </div>
+            </div>
+            <div class="progress-info">
+                <div class="status">
+                    <div class="status-title"> Yesterday </div>
+                    <div class="status-number"> {{ CountNewCustomerYesterdayInBranch }} customer</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+{% endblock %}

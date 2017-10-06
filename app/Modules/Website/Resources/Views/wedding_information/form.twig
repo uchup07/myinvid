@@ -1,0 +1,852 @@
+{% extends "admin::layouts.layout" %}
+
+{% block addcss %}
+
+    {{ asset('plugins/select2/css/select2.min.css') | css_tag }}
+    {{ asset('plugins/select2/css/select2-bootstrap.min.css') | css_tag }}
+
+    {{ asset('plugins/bootstrap-toastr/toastr.min.css') | css_tag }}
+
+    <!-- DATEPICKER  -->
+    {{ asset('plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') | css_tag }}
+
+    <!-- FILEINPUT -->
+    {{ asset('plugins/bootstrap-fileinput/bootstrap-fileinput.css') | css_tag }}
+
+    <!-- DATEPICKER  -->
+    {{ asset('plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')|css_tag }}
+
+    {{ asset('plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css')|css_tag }}
+
+
+{% endblock %}
+
+{% block pageheader %}
+    <!-- BEGIN PAGE HEAD-->
+    <div class="page-head">
+        <div class="container">
+            <!-- BEGIN PAGE TITLE -->
+            <div class="page-title">
+                <h1>{{ string_menuname }}
+                    <small>{{ string_active_menu }}</small>
+                </h1>
+            </div>
+            <!-- END PAGE TITLE -->
+        </div>
+    </div>
+    <!-- END PAGE HEAD-->
+
+{% endblock %}
+
+
+{% block breadcrumbs %}
+    <!-- BEGIN PAGE BREADCRUMBS -->
+    <ul class="page-breadcrumb breadcrumb">
+        <li>
+            <a href="{{ url('/home') }}">Home</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a href="javascript:void(0)">{{ string_menuname }}</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            {{ string_active_menu }}
+        </li>
+    </ul>
+    <!-- END PAGE BREADCRUMBS -->
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN VALIDATION STATES-->
+            <div class="portlet light portlet-fit portlet-form bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-wrench font-green"></i>
+                        <span class="caption-subject font-green bold uppercase">Wedding Information </span>
+                    </div>
+                    {%  if state == "edit" %}
+                    <div class="actions">
+                        <a href="{{ route('wedding_gallery_form', Website.id) }}" class="btn btn-success btn-circle" name="btn" value="Nex"><i class="fa fa-share"></i> Selanjutnya</a>
+                    </div>
+                    {% endif %}
+
+                </div>
+                <div class="portlet-body">
+                    {% if (session('ScsMsg')) %}
+                        <div class="alert alert-success">
+                            <button class="close" data-close="alert"></button>
+                            <span>{{ session('ScsMsg') }}</span>
+                        </div>
+                    {% endif %}
+
+                    {% if (session('ErrMsg')) %}
+                        <div class="alert alert-danger">
+                            <button class="close" data-close="alert"></button>
+                            <span>{{ session('ErrMsg') }}</span>
+                        </div>
+                    {% endif %}
+
+                    {% if (session('WrngMsg')) %}
+                        <div class="alert alert-warning">
+                            <button class="close" data-close="alert"></button>
+                            <span>{{ session('WrngMsg') }}</span>
+                        </div>
+                    {% endif %}
+
+                    {% if (session('InfoMsg')) %}
+                        <div class="alert alert-info">
+                            <button class="close" data-close="alert"></button>
+                            <span>{{ session('InfoMsg') }}</span>
+                        </div>
+                    {% endif %}
+
+                    <div class="mt-element-step">
+                        <div class="row step-line">
+                            <div class="col-md-2 mt-step-col first active">
+                                <div class="mt-step-number bg-white">1</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Wedding Info</div>
+                                <div class="mt-step-content font-grey-cascade">Lengkapi data pernikahan</div>
+                            </div>
+                            <div class="col-md-2 mt-step-col">
+                                <div class="mt-step-number bg-white">2</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Gallery Image</div>
+                                <div class="mt-step-content font-grey-cascade">Upload Foto Pre-wedding</div>
+                            </div>
+                            <div class="col-md-2 mt-step-col">
+                                <div class="mt-step-number bg-white">3</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Story of Love</div>
+                                <div class="mt-step-content font-grey-cascade">Moment kesayangan</div>
+                            </div>
+                            <div class="col-md-2 mt-step-col">
+                                <div class="mt-step-number bg-white">4</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Bridesmaid</div>
+                                <div class="mt-step-content font-grey-cascade">Informasi Pendamping</div>
+                            </div>
+                            <div class="col-md-2 mt-step-col">
+                                <div class="mt-step-number bg-white">5</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Template</div>
+                                <div class="mt-step-content font-grey-cascade">Pilih Template Website</div>
+                            </div>
+                            <div class="col-md-2 mt-step-col last">
+                                <div class="mt-step-number bg-white">6</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Finish</div>
+                                <div class="mt-step-content font-grey-cascade">Siap disebarkan</div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                    <!-- BEGIN FORM-->
+                    <form action="{% if state == "add" %}{{ route('create_wedding_information_saved') }}{% else %}{{ route('manage_wedding_information_saved') }} {% endif %}" name="form_wedding_information" id="form_wedding_information" class="form-horizontal" method="post" enctype="multipart/form-data">
+                        {{ csrf_field() }}
+                        <input type="hidden" id="website_id" name="website_id" value="{{ Website.id }}">
+                        <div class="form-body">
+                            <h4 class="caption-subject font-red bold uppercase">Pria</h4>
+                            <hr>
+
+                            <!-- NAME BOY -->
+                            <div class="form-group {% if (errors.has('boy_name')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Nama Lengkap
+                                    <span class="required"> * </span>
+                                </label>
+                                <div class="col-md-3">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-user"></i>
+                                        <input type="text" class="form-control maxlength" maxlength="150" id="boy_name" name="boy_name" placeholder="Masukan Nama Lengkap" autocomplete="off" value="{% if state == 'add' %}{{ old('boy_name') }}{% else %}{{ Website.boy_name }}{% endif %}">
+                                        {% if (errors.has('boy_name')) %}<span class="help-block"> {{ errors.first('boy_name') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END NAME BOY -->
+
+                            <!-- NICK NAME BOY -->
+                            <div class="form-group {% if (errors.has('boy_nick_name')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Nama Panggilan
+                                    <span class="required"> * </span>
+                                </label>
+                                <div class="col-md-3">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-user"></i>
+                                        <input type="text" class="form-control maxlength" maxlength="5" id="boy_nick_name" name="boy_nick_name" placeholder="Maks. 5 huruf" autocomplete="off" value="{% if state == 'add' %}{{ old('boy_nick_name') }}{% else %}{{ Website.boy_nick_name }}{% endif %}">
+                                        {% if (errors.has('boy_nick_name')) %}<span class="help-block"> {{ errors.first('boy_nick_name') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END NICK NAME BOY -->
+
+                            <!-- BOY EMAIL -->
+                            <div class="form-group {% if (errors.has('boy_email')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Email
+                                    <span class="required"> * </span>
+                                </label>
+                                <div class="col-md-3">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-envelope"></i>
+                                        <input type="text" class="form-control maxlength" maxlength="150" id="boy_email" name="boy_email" placeholder="Masukan Alamat Email" autocomplete="off" value="{% if state == 'add' %}{{ old('boy_email') }}{% else %}{{ Website.boy_email }}{% endif %}">
+                                        {% if (errors.has('boy_email')) %}<span class="help-block"> {{ errors.first('boy_email') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END BOY EMAIL -->
+
+                            <!-- BOY MOBILE -->
+                            <div class="form-group {% if (errors.has('boy_mobile')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Handphone </label>
+                                <div class="col-md-3">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-mobile"></i>
+                                        <input type="text" class="form-control mobile" id="boy_mobile" name="boy_mobile" placeholder="+628 8190888xxxx" autocomplete="off" value="{% if state == 'add' %}{{ old('boy_mobile') }}{% else %}{{ Website.boy_mobile }}{% endif %}">
+                                        {% if (errors.has('boy_mobile')) %}<span class="help-block"> {{ errors.first('boy_mobile') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END BOY MOBILE -->
+
+                            <!-- DATE OF BIRD -->
+                            <div class="form-group {% if (errors.has('boy_dob')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Tanggal Lahir
+                                    <span class="required"> * </span>
+                                </label>
+                                <div class="col-md-3">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-calendar"></i>
+                                        <input type="text" class="form-control date-picker" id="boy_dob" name="boy_dob" data-date-format="dd-mm-yyyy" placeholder="dd-mm-yyyy" autocomplete="off" value="{% if state == 'add' %}{{ old('boy_dob') }}{% else %}{{ boy_dob }}{% endif %}">
+                                        {% if (errors.has('boy_dob')) %}<span class="help-block"> {{ errors.first('boy_dob') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END DATE OF BIRD -->
+
+                            <!-- BOY DESCRIPTION -->
+                            <div class="form-group {% if (errors.has('boy_description')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Tentang Kamu </label>
+                                <div class="col-md-6">
+                                    <div class="input-icon right">
+                                        <textarea class="form-control" id="boy_description" name="boy_description" rows="3">{% if state == 'add' %}{{ old('boy_description') }}{% else %}{{ Website.boy_description }}{% endif %}</textarea>
+                                        {% if (errors.has('boy_description')) %}<span class="help-block"> {{ errors.first('boy_description') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END BOY DESCRIPTION -->
+
+                            <!-- BOY IMAGE -->
+                            <div class="form-group {% if (errors.has('boy_image')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Foto
+                                </label>
+                                <div class="col-md-6">
+                                    {% if (Website.boy_image)%}
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;">
+                                                {{ asset(BoyImage) | image }}
+                                            </div>
+                                        </div>
+                                        <div class="clearfix margin-top-10">
+                                            <a href="javascript:;" class="btn red" id="btn-RemoveBanner"> Remove </a>
+                                        </div>
+                                    {% else %}
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"> </div>
+                                            <div>
+                                      <span class="btn red btn-outline btn-file">
+                                          <span class="fileinput-new"> Select image </span>
+                                          <span class="fileinput-exists"> Change </span>
+                                          <input type="file" name="boy_image" id="boy_image"> </span>
+                                                <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
+                                            </div>
+                                            {% if (errors.has('boy_image')) %}<span class="help-block"> {{ errors.first('boy_image') }} </span>{% endif %}
+                                        </div>
+                                        <div class="clearfix margin-top-10">
+                                            <span class="label label-success">NOTE!</span> Mohon Upload Foto Kamu. Maksimum 2 MB. </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <!-- END BOY IMAGE -->
+
+                            <!-- BOY FACEBOOK -->
+                            <div class="form-group {% if (errors.has('boy_facebook_url')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Facebook </label>
+                                <div class="col-md-6">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-facebook"></i>
+                                        <input type="text" class="form-control" id="boy_facebook_url" name="boy_facebook_url" placeholder="Masukan Url Profile Facebook Kamu" autocomplete="off" value="{% if state == 'add' %}{{ old('boy_facebook_url') }}{% else %}{{ Website.boy_facebook_url }}{% endif %}">
+                                        {% if (errors.has('boy_facebook_url')) %}<span class="help-block"> {{ errors.first('boy_facebook_url') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END BOY FACEBOOK  -->
+
+                            <!-- BOY TWITTER -->
+                            <div class="form-group {% if (errors.has('boy_twitter_url')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Twitter </label>
+                                <div class="col-md-6">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-twitter"></i>
+                                        <input type="text" class="form-control" id="boy_twitter_url" name="boy_twitter_url" placeholder="Masukan Url Profile Twitter Kamu" autocomplete="off" value="{% if state == 'add' %}{{ old('boy_twitter_url') }}{% else %}{{ Website.boy_twitter_url }}{% endif %}">
+                                        {% if (errors.has('boy_twitter_url')) %}<span class="help-block"> {{ errors.first('boy_twitter_url') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END BOY TWITTER  -->
+
+                            <!-- BOY INSTAGRAM -->
+                            <div class="form-group {% if (errors.has('boy_instagram_url')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Instagram </label>
+                                <div class="col-md-6">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-instagram"></i>
+                                        <input type="text" class="form-control" id="boy_instagram_url" name="boy_instagram_url" placeholder="Masukan Url Profile Instagram Kamu" autocomplete="off" value="{% if state == 'add' %}{{ old('boy_instagram_url') }}{% else %}{{ Website.boy_instagram_url }}{% endif %}">
+                                        {% if (errors.has('boy_instagram_url')) %}<span class="help-block"> {{ errors.first('boy_instagram_url') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END BOY INSTAGRAM  -->
+
+                            <br>
+                            <h4 class="caption-subject font-red bold uppercase">Wanita</h4>
+                            <hr>
+
+                            <!-- GIRL NAME -->
+                            <div class="form-group {% if (errors.has('girl_name')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Nama Lengkap
+                                    <span class="required"> * </span>
+                                </label>
+                                <div class="col-md-3">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-user"></i>
+                                        <input type="text" class="form-control maxlength" maxlength="150" id="girl_name" name="girl_name" placeholder="Masukan Nama Lengkap" autocomplete="off" value="{% if state == 'add' %}{{ old('girl_name') }}{% else %}{{ Website.girl_name }}{% endif %}">
+                                        {% if (errors.has('girl_name')) %}<span class="help-block"> {{ errors.first('girl_name') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END GIRL NAME -->
+
+                            <!-- GIRL NICK NAME -->
+                            <div class="form-group {% if (errors.has('girl_nick_name')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Nama Panggilan
+                                    <span class="required"> * </span>
+                                </label>
+                                <div class="col-md-3">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-user"></i>
+                                        <input type="text" class="form-control maxlength" maxlength="5" id="girl_nick_name" name="girl_nick_name" placeholder="Maks. 5 huruf" autocomplete="off" value="{% if state == 'add' %}{{ old('girl_nick_name') }}{% else %}{{ Website.girl_nick_name }}{% endif %}">
+                                        {% if (errors.has('girl_nick_name')) %}<span class="help-block"> {{ errors.first('girl_nick_name') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END GIRL NICK NAME -->
+
+                            <!-- GIRL EMAIL -->
+                            <div class="form-group {% if (errors.has('girl_email')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Email
+                                    <span class="required"> * </span>
+                                </label>
+                                <div class="col-md-3">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-envelope"></i>
+                                        <input type="text" class="form-control maxlength" maxlength="150" id="girl_email" name="girl_email" placeholder="Masukan Alamat Email" autocomplete="off" value="{% if state == 'add' %}{{ old('girl_email') }}{% else %}{{ Website.girl_email }}{% endif %}">
+                                        {% if (errors.has('girl_email')) %}<span class="help-block"> {{ errors.first('girl_email') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END GIRL EMAIL -->
+
+                            <!-- GIRL MOBILE -->
+                            <div class="form-group {% if (errors.has('girl_mobile')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Handphone </label>
+                                <div class="col-md-3">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-mobile"></i>
+                                        <input type="text" class="form-control mobile" id="girl_mobile" name="girl_mobile" placeholder="+628 8190888xxxx" autocomplete="off" value="{% if state == 'add' %}{{ old('girl_mobile') }}{% else %}{{ Website.girl_mobile }}{% endif %}">
+                                        {% if (errors.has('girl_mobile')) %}<span class="help-block"> {{ errors.first('girl_mobile') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END GIRL MOBILE -->
+
+                            <!-- GIRL DATE OF BIRD -->
+                            <div class="form-group {% if (errors.has('girl_dob')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Tanggal Lahir
+                                    <span class="required"> * </span>
+                                </label>
+                                <div class="col-md-3">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-calendar"></i>
+                                        <input type="text" class="form-control date-picker" id="girl_dob" name="girl_dob" data-date-format="dd-mm-yyyy" placeholder="dd-mm-yyyy" autocomplete="off" value="{% if state == 'add' %}{{ old('girl_dob') }}{% else %}{{ girl_dob }}{% endif %}">
+                                        {% if (errors.has('girl_dob')) %}<span class="help-block"> {{ errors.first('girl_dob') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END GIRL DATE OF BIRD -->
+
+                            <!-- GIRL DESCRIPTION -->
+                            <div class="form-group {% if (errors.has('girl_description')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Tentang Kamu </label>
+                                <div class="col-md-6">
+                                    <div class="input-icon right">
+                                        <textarea class="form-control" id="girl_description" name="girl_description" rows="3">{% if state == 'add' %}{{ old('girl_description') }}{% else %}{{ Website.girl_description }}{% endif %}</textarea>
+                                        {% if (errors.has('girl_description')) %}<span class="help-block"> {{ errors.first('girl_description') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END GIRL DESCRIPTION -->
+
+                            <!-- GIRL IMAGE -->
+                            <div class="form-group {% if (errors.has('girl_image')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Foto
+                                </label>
+                                <div class="col-md-6">
+                                    {% if (Website.girl_image)%}
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;">
+                                                {{ asset(GirlImage) | image }}
+                                            </div>
+                                        </div>
+                                        <div class="clearfix margin-top-10">
+                                            <a href="javascript:;" class="btn red" id="btn-RemoveBanner"> Remove </a>
+                                        </div>
+                                    {% else %}
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"> </div>
+                                            <div>
+                                      <span class="btn red btn-outline btn-file">
+                                          <span class="fileinput-new"> Select image </span>
+                                          <span class="fileinput-exists"> Change </span>
+                                          <input type="file" name="girl_image" id="girl_image"> </span>
+                                                <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
+                                            </div>
+                                            {% if (errors.has('girl_image')) %}<span class="help-block"> {{ errors.first('girl_image') }} </span>{% endif %}
+                                        </div>
+                                        <div class="clearfix margin-top-10">
+                                            <span class="label label-success">NOTE!</span> Mohon Upload Foto Kamu. Maksimum 2 MB. </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <!-- END GIRL IMAGE -->
+
+
+                            <!-- GIRL FACEBOOK -->
+                            <div class="form-group {% if (errors.has('girl_facebook_url')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Facebook </label>
+                                <div class="col-md-6">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-facebook"></i>
+                                        <input type="text" class="form-control" id="girl_facebook_url" name="girl_facebook_url" placeholder="Masukan Url Profile Facebook Kamu" autocomplete="off" value="{% if state == 'add' %}{{ old('girl_facebook_url') }}{% else %}{{ Website.girl_facebook_url }}{% endif %}">
+                                        {% if (errors.has('girl_facebook_url')) %}<span class="help-block"> {{ errors.first('girl_facebook_url') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END GIRL FACEBOOK  -->
+
+                            <!-- GIRL TWITTER -->
+                            <div class="form-group {% if (errors.has('girl_twitter_url')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Twitter </label>
+                                <div class="col-md-6">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-twitter"></i>
+                                        <input type="text" class="form-control" id="girl_twitter_url" name="girl_twitter_url" placeholder="Masukan Url Profile Twitter Kamu" autocomplete="off" value="{% if state == 'add' %}{{ old('girl_twitter_url') }}{% else %}{{ Website.girl_twitter_url }}{% endif %}">
+                                        {% if (errors.has('girl_twitter_url')) %}<span class="help-block"> {{ errors.first('girl_twitter_url') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END GIRL TWITTER  -->
+
+                            <!-- GIRL INSTAGRAM -->
+                            <div class="form-group {% if (errors.has('girl_instagram_url')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Instagram </label>
+                                <div class="col-md-6">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-instagram"></i>
+                                        <input type="text" class="form-control" id="girl_instagram_url" name="girl_instagram_url" placeholder="Masukan Url Profile Instagram Kamu" autocomplete="off" value="{% if state == 'add' %}{{ old('girl_instagram_url') }}{% else %}{{ Website.girl_instagram_url }}{% endif %}">
+                                        {% if (errors.has('girl_instagram_url')) %}<span class="help-block"> {{ errors.first('girl_instagram_url') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END GIRL INSTAGRAM  -->
+
+
+                            <br>
+                            <h4 class="caption-subject font-red bold uppercase">Pernikahan (Akad & Resepsi)</h4>
+                            <hr>
+
+                            <!-- AKAD MULAI -->
+                            <div class="form-group {% if (errors.has('ceremony_start_date')) %}has-error{% elseif (errors.has('ceremony_start_time')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Akad Mulai
+                                    <span class="required"> * </span>
+                                </label>
+                                <div class="col-md-3">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-calendar"></i>
+                                        <input type="text" class="form-control date-picker" id="ceremony_start_date" name="ceremony_start_date" data-date-format="dd-mm-yyyy" placeholder="dd-mm-yyyy" autocomplete="off" value="{% if state == 'add' %}{{ old('ceremony_start_date') }}{% else %}{{ ceremony_start_date }}{% endif %}">
+                                        {% if (errors.has('ceremony_start_date')) %}<span class="help-block"> {{ errors.first('ceremony_start_date') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control timepicker timepicker-24" id="ceremony_start_time" name="ceremony_start_time" value="{% if state == 'add' %}{{ old('ceremony_start_time') }}{% else %}{{ ceremony_start_time }}{% endif %}">
+                                        <span class="input-group-btn">
+                                            <button class="btn default" type="button">
+                                                <i class="fa fa-clock-o"></i>
+                                            </button>
+                                        </span>
+                                        {% if (errors.has('ceremony_start_time')) %}<span class="help-block"> {{ errors.first('ceremony_start_time') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END AKAD MULAI -->
+
+                            <!-- AKAD BERAKHIR -->
+                            <div class="form-group {% if (errors.has('ceremony_end_date')) %}has-error{% elseif (errors.has('ceremony_end_time')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Akad Berakhir
+                                    <span class="required"> * </span>
+                                </label>
+                                <div class="col-md-3">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-calendar"></i>
+                                        <input type="text" class="form-control date-picker" id="ceremony_end_date" name="ceremony_end_date" data-date-format="dd-mm-yyyy" placeholder="dd-mm-yyyy" autocomplete="off" value="{% if state == 'add' %}{{ old('ceremony_end_date') }}{% else %}{{ ceremony_end_date }}{% endif %}">
+                                        {% if (errors.has('ceremony_end_date')) %}<span class="help-block"> {{ errors.first('ceremony_end_date') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control timepicker timepicker-24" id="ceremony_end_time" name="ceremony_end_time" value="{% if state == 'add' %}{{ old('ceremony_end_time') }}{% else %}{{ ceremony_end_time }}{% endif %}">
+                                        <span class="input-group-btn">
+                                            <button class="btn default" type="button">
+                                                <i class="fa fa-clock-o"></i>
+                                            </button>
+                                        </span>
+                                        {% if (errors.has('ceremony_end_time')) %}<span class="help-block"> {{ errors.first('ceremony_end_time') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END AKAD BERAKHIR -->
+
+
+                            <!-- NAMA GEDUNG -->
+                            <div class="form-group {% if (errors.has('ceremony_place')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Tempat
+                                    <span class="required"> * </span>
+                                </label>
+                                <div class="col-md-6">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-building"></i>
+                                        <input type="text" class="form-control maxlength" maxlength="150" id="ceremony_place" name="ceremony_place" placeholder="Masukan Nama Gedung/Lokasi" autocomplete="off" value="{% if state == 'add' %}{{ old('ceremony_place') }}{% else %}{{ Website.ceremony_place }}{% endif %}">
+                                        {% if (errors.has('ceremony_place')) %}<span class="help-block"> {{ errors.first('ceremony_place') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END NAMA GEDUNG  -->
+
+                            <!-- ALAMAT AKAD -->
+                            <div class="form-group {% if (errors.has('ceremony_address')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Alamat </label>
+                                <div class="col-md-6">
+                                    <div class="input-icon right">
+                                        <textarea class="form-control maxlength_textarea" maxlength="255" id="ceremony_address" name="ceremony_address" rows="3">{% if state == 'add' %}{{ old('ceremony_address') }}{% else %}{{ Website.ceremony_address }}{% endif %}</textarea>
+                                        {% if (errors.has('ceremony_address')) %}<span class="help-block"> {{ errors.first('ceremony_address') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END ALAMAT AKAD -->
+
+
+                            <!-- GOOGLE MAPS AKAD -->
+                            <div class="form-group {% if (errors.has('ceremony_googlemaps')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Google Maps </label>
+                                <div class="col-md-6">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-map-pin"></i>
+                                        <input type="text" class="form-control" id="ceremony_googlemaps" name="ceremony_googlemaps" placeholder="Masukan Embed Lokasi Google Maps" autocomplete="off" value="{% if state == 'add' %}{{ old('ceremony_googlemaps') }}{% else %}{{ Website.ceremony_googlemaps }}{% endif %}">
+                                        {% if (errors.has('ceremony_googlemaps')) %}<span class="help-block"> {{ errors.first('ceremony_address') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END GOOGLE MAPS AKAD -->
+
+                            <!-- GOOGLE MAPS AKAD -->
+                            <div class="form-group {% if (errors.has('ceremony_waze')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Waze </label>
+                                <div class="col-md-6">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-map-marker"></i>
+                                        <input type="text" class="form-control" id="ceremony_waze" name="ceremony_waze" placeholder="Masukan Embed Lokasi Waze" autocomplete="off" value="{% if state == 'add' %}{{ old('ceremony_waze') }}{% else %}{{ Website.ceremony_waze }}{% endif %}">
+                                        {% if (errors.has('ceremony_waze')) %}<span class="help-block"> {{ errors.first('ceremony_waze') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END GOOGLE MAPS AKAD -->
+
+                            <hr>
+
+                            <!-- PERNIKAHAN MULAI -->
+                            <div class="form-group {% if (errors.has('wedding_start_date')) %}has-error{% elseif (errors.has('wedding_start_time')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Pernikahan Mulai
+                                    <span class="required"> * </span>
+                                </label>
+                                <div class="col-md-3">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-calendar"></i>
+                                        <input type="text" class="form-control date-picker" id="wedding_start_date" name="wedding_start_date" data-date-format="dd-mm-yyyy" placeholder="dd-mm-yyyy" autocomplete="off" value="{% if state == 'add' %}{{ old('wedding_start_date') }}{% else %}{{ wedding_start_date }}{% endif %}">
+                                        {% if (errors.has('wedding_start_date')) %}<span class="help-block"> {{ errors.first('wedding_start_date') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control timepicker timepicker-24" id="wedding_start_time" name="wedding_start_time" value="{% if state == 'add' %}{{ old('wedding_start_time') }}{% else %}{{ wedding_start_time }}{% endif %}">
+                                        <span class="input-group-btn">
+                                            <button class="btn default" type="button">
+                                                <i class="fa fa-clock-o"></i>
+                                            </button>
+                                        </span>
+                                        {% if (errors.has('wedding_start_time')) %}<span class="help-block"> {{ errors.first('wedding_start_time') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END PERNIKAHAN MULAI -->
+
+                            <!-- PERNIKAHAN BERAKHIR -->
+                            <div class="form-group {% if (errors.has('wedding_end_date')) %}has-error{% elseif (errors.has('wedding_end_time')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Pernikahan Berakhir
+                                    <span class="required"> * </span>
+                                </label>
+                                <div class="col-md-3">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-calendar"></i>
+                                        <input type="text" class="form-control date-picker" id="wedding_end_date" name="wedding_end_date" data-date-format="dd-mm-yyyy" placeholder="dd-mm-yyyy" autocomplete="off" value="{% if state == 'add' %}{{ old('wedding_end_date') }}{% else %}{{ wedding_end_date }}{% endif %}">
+                                        {% if (errors.has('wedding_end_date')) %}<span class="help-block"> {{ errors.first('wedding_end_date') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control timepicker timepicker-24" id="wedding_end_time" name="wedding_end_time" value="{% if state == 'add' %}{{ old('wedding_end_time') }}{% else %}{{ wedding_end_time }}{% endif %}">
+                                        <span class="input-group-btn">
+                                            <button class="btn default" type="button">
+                                                <i class="fa fa-clock-o"></i>
+                                            </button>
+                                        </span>
+                                        {% if (errors.has('wedding_end_time')) %}<span class="help-block"> {{ errors.first('wedding_end_time') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END PERNIKAHAN BERAKHIR -->
+
+
+                            <!-- NAMA GEDUNG PERNIKAHAN-->
+                            <div class="form-group {% if (errors.has('wedding_place')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Tempat
+                                    <span class="required"> * </span>
+                                </label>
+                                <div class="col-md-6">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-building"></i>
+                                        <input type="text" class="form-control maxlength" maxlength="150" id="wedding_place" name="wedding_place" placeholder="Masukan Nama Gedung/Lokasi" autocomplete="off" value="{% if state == 'add' %}{{ old('wedding_place') }}{% else %}{{ Website.wedding_place }}{% endif %}">
+                                        {% if (errors.has('wedding_place')) %}<span class="help-block"> {{ errors.first('wedding_place') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END NAMA GEDUNG PERNIKAHAN -->
+
+                            <!-- ALAMAT PERNIKAHAN -->
+                            <div class="form-group {% if (errors.has('wedding_address')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Alamat </label>
+                                <div class="col-md-6">
+                                    <div class="input-icon right">
+                                        <textarea class="form-control maxlength_textarea" maxlength="255" id="wedding_address" name="wedding_address" rows="3">{% if state == 'add' %}{{ old('wedding_address') }}{% else %}{{ Website.wedding_address }}{% endif %}</textarea>
+                                        {% if (errors.has('wedding_address')) %}<span class="help-block"> {{ errors.first('wedding_address') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END ALAMAT PERNIKAHAN -->
+
+
+                            <!-- GOOGLE MAPS PERNIKAHAN -->
+                            <div class="form-group {% if (errors.has('wedding_googlemaps')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Google Maps </label>
+                                <div class="col-md-6">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-map-pin"></i>
+                                        <input type="text" class="form-control" id="wedding_googlemaps" name="wedding_googlemaps" placeholder="Masukan Embed Lokasi Google Maps" autocomplete="off" value="{% if state == 'add' %}{{ old('wedding_googlemaps') }}{% else %}{{ Website.wedding_googlemaps }}{% endif %}">
+                                        {% if (errors.has('wedding_googlemaps')) %}<span class="help-block"> {{ errors.first('wedding_googlemaps') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END GOOGLE MAPS PERNIKAHAN -->
+
+                            <!-- GOOGLE MAPS PERNIKAHAN -->
+                            <div class="form-group {% if (errors.has('wedding_waze')) %}has-error{% endif %}">
+                                <label class="control-label col-md-3">Waze </label>
+                                <div class="col-md-6">
+                                    <div class="input-icon right">
+                                        <i class="fa fa-map-marker"></i>
+                                        <input type="text" class="form-control" id="wedding_waze" name="wedding_waze" placeholder="Masukan Embed Lokasi Waze" autocomplete="off" value="{% if state == 'add' %}{{ old('wedding_waze') }}{% else %}{{ Website.wedding_waze }}{% endif %}">
+                                        {% if (errors.has('wedding_waze')) %}<span class="help-block"> {{ errors.first('wedding_waze') }} </span>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END GOOGLE MAPS PERNIKAHAN -->
+
+                        </div>
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-9">
+                                    {% if state == "add" %}
+                                        <button type="submit" class="btn btn-success" name="btn" value="Save"><i class="fa fa-save"></i> Save</button>
+                                    {% else %}
+                                        <button type="submit" class="btn btn-success" name="btn" value="Save"><i class="fa fa-save"></i> Update</button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </form>
+                    <!-- END FORM-->
+                </div>
+                <!-- END VALIDATION STATES-->
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block addmodal %}
+    <!-- CONFIRM DELETE -->
+    <div class="modal fade bs-modal-sm" id="ConfirmDelete" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-danger">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Delete Confirmation!</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure??
+                    <input type="hidden" id="id_delete" name="id_delete">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" id="btn-DeleteRow">Delete</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- CONFIRM DELETE -->
+
+
+    <!-- ERROR MESSAGE -->
+    <div class="modal fade" id="ShowErrMsg" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Warning!</h4>
+                </div>
+                <div class="modal-body">
+                    <p id="msgError"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- ERROR MESSAGE -->
+
+    <!-- CONFIRM REMOVE BANNER -->
+    <div class="modal fade bs-modal-sm" id="ConfirmRemove" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-danger">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Remove Confirmation!</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure??
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="btn-RemoveBannerNow">Remove</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- CONFIRM REMOVE BANNER -->
+
+
+    <!-- CONFIRM REMOVE LOGO -->
+    <div class="modal fade bs-modal-sm" id="ConfirmLogoRemove" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-danger">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Remove Confirmation!</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure??
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" id="btn-RemoveLogoNow">Remove</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- CONFIRM REMOVE LOGO -->
+{% endblock %}
+
+{% block addjs %}
+    <!-- VALIDATION -->
+    {{ asset('plugins/jquery-validation/js/jquery.validate.min.js') | script_tag }}
+    {{ asset('plugins/jquery-validation/js/additional-methods.min.js') | script_tag }}
+    {{ asset('modules/website/validate.js') | script_tag }}
+
+    <!-- DATEPICKER -->
+    {{ asset('plugins/moment.min.js') | script_tag }}
+    {{ asset('plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') | script_tag }}
+    {{ asset('plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') | script_tag }}
+
+    <!-- JS DATEPICKER -->
+    {{ asset('js/datetimepicker/datetime_picker.js') | script_tag }}
+
+    <!-- NOTIFICATION -->
+    {{ asset('plugins/bootstrap-toastr/toastr.min.js')|  script_tag }}
+
+    <!-- DROPDOWN -->
+    {{ asset('plugins/select2/js/select2.full.min.js') | script_tag }}
+
+    <!-- JS INPUT-MASK -->
+    {{ asset('plugins/jquery-inputmask/jquery.inputmask.bundle.min.js')|script_tag }}
+    {{ asset('js/input-mask/input-mask.js')|script_tag }}
+
+
+    <!-- JS SELECT2 -->
+    {{ asset('js/select2/select2.js') | script_tag }}
+
+    <!-- JS -->
+    {#{{ asset('modules/service/main.js') | script_tag }}#}
+
+
+    <!-- FILE INPUT -->
+    {{ asset('plugins/bootstrap-fileinput/bootstrap-fileinput.js') | script_tag }}
+
+
+    {{ asset('plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js')|script_tag }}
+
+    <!-- MAXLENGTH-->
+    {{ asset('plugins/bootstrap-maxlength/bootstrap-maxlength.min.js')|script_tag }}
+    {{ asset('js/maxlength/maxlength.js')|script_tag }}
+
+
+
+{% endblock %}

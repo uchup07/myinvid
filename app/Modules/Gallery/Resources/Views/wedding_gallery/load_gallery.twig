@@ -1,0 +1,35 @@
+{{ asset('plugins/cubeportfolio/css/cubeportfolio.css')| css_tag }}
+
+<div id="js-filters-juicy-projects" class="cbp-l-filters-button">
+    <div data-filter="*" class="cbp-filter-item-active cbp-filter-item btn dark btn-outline uppercase"> All
+        <div class="cbp-filter-counter"></div>
+    </div>
+</div>
+<div class="portfolio-content portfolio-1">
+    <div id="js-grid-juicy-projects" class="cbp">
+        {% for image in ImageGallery %}
+            {% set PathGallery =  call_helpers('getPathGallery') %}
+            {% set file = call_helpers_two('get_GenerateLinkImage',PathGallery, image.file ) %}
+
+            <div class="cbp-item">
+                <div class="cbp-caption">
+                    <div class="cbp-caption-defaultWrap">
+                        <img src="{{ asset(file) }}" alt=""> </div>
+                    <div class="cbp-caption-activeWrap">
+                        <div class="cbp-l-caption-alignCenter">
+                            <div class="cbp-l-caption-body">
+                                <a href="{{ asset(file) }}" class="cbp-lightbox cbp-l-caption-buttonRight uppercase btn blue uppercase" data-title="{{ WebsiteInfo.boy_nick_name }} & {{ WebsiteInfo.girl_nick_name }}"><i class="glyphicon glyphicon-zoom-in "></i> Perbesar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbp-l-grid-projects-title uppercase text-center uppercase text-center">{{ WebsiteInfo.boy_nick_name }} & {{ WebsiteInfo.girl_nick_name }}</div>
+                <div class="cbp-l-grid-projects-desc uppercase text-center uppercase text-center"><a href="javascript:void(0);" class="btn btn-danger btn-circle" name="btn" value="{{ image.id }}" onclick="DeleteGalleryImage({{ image.id }})"><i class="fa fa-trash"></i> Hapus</a></div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- JS IMAGE GALLERY -->
+{{ asset('plugins/cubeportfolio/js/jquery.cubeportfolio.min.js')|script_tag }}
+    {{ asset('js/image-gallery/image-gallery.js')|script_tag }}

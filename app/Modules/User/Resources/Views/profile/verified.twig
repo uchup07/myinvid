@@ -1,0 +1,180 @@
+{% extends "admin::layouts.layout" %}
+
+{% block addcss %}
+
+<!-- TOASTR -->
+{{ asset('plugins/bootstrap-toastr/toastr.min.css')| css_tag }}
+
+{% endblock %}
+
+{% block pageheader %}
+<!-- BEGIN PAGE HEAD-->
+<div class="page-head">
+    <div class="container">
+        <!-- BEGIN PAGE TITLE -->
+        <div class="page-title">
+            <h1>{{ string_menuname }}
+                <small>{{ form_name }}</small>
+            </h1>
+        </div>
+        <!-- END PAGE TITLE -->
+    </div>
+</div>
+<!-- END PAGE HEAD-->
+
+{% endblock %}
+
+
+{% block breadcrumbs %}
+<!-- BEGIN PAGE BREADCRUMBS -->
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="{{ url('/home') }}">Home</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <a href="javascript:void(0)">{{ string_menuname }}</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <span>{{ form_name }}</span>
+    </li>
+</ul>
+<!-- END PAGE BREADCRUMBS -->
+{% endblock %}
+
+{% block body %}
+
+<div class="row">
+  <div class="col-md-12">
+      <!-- BEGIN VALIDATION STATES-->
+      <div class="portlet light">
+          <div class="portlet-body">
+              <div class="tabbable tabbable-tabdrop">
+                  <ul class="nav nav-tabs">
+                      <li>
+                          <a href="{{ route ('profile_info') }}" aria-expanded="false">Member Info</a>
+                      </li>
+                      <li>
+                          <a href="{{ route('profile_avatar') }}" aria-expanded="false">Avatar</a>
+                      </li>
+                      <li class="active">
+                          <a href="javascript:void(0)"  aria-expanded="false">Verified Account</a>
+                      </li>
+                  </ul>
+                  <div class="tab-content">
+                        {% if (session('ScsMsg')) %}
+                        <div class="alert alert-success">
+                            <strong>Success!</strong> {{ session('ScsMsg') }}
+                        </div>
+                        {% endif %}
+
+                        {% if (session('ErrMsg')) %}
+                        <div class="alert alert-danger">
+                            <strong>Error!</strong> {{ session('ErrMsg') }}
+                        </div>
+                        {% endif %}
+
+                      <!-- FORM -->
+                      <form action="#" name="form_{{ form }}" id="form_{{ form }}" class="form-horizontal" method="post">
+                          {{ csrf_field() }}
+                          <div class="form-body">
+
+                              <!-- NAME -->
+                              <div class="form-group {% if (errors.has('name')) %}has-error{% endif %}">
+                                  <label class="control-label col-md-2">Mobile Smartpone
+                                      <span class="required"> * </span>
+                                  </label>
+                                    <div class="col-md-4">
+                                        <div class="input-icon right">
+                                            <i class="fa fa-user"></i>
+                                            <input type="text" class="form-control mobile" id="mobile" name="mobile" autocomplete="off" value="{% if state == 'add' %}{{ old('mobile') }}{% else %}{{ User.mobile }}{% endif %}">
+                                            {% if (errors.has('mobile_phone')) %}<span class="help-block"> {{ errors.first('mobile_phone') }} </span>{% endif %}
+                                        </div>
+                                    </div>
+                              </div>
+                              <!-- END NAME -->
+
+                              <hr>
+                          </div>
+                          <div class="form-actions">
+                              <div class="row">
+                                  <div class="col-md-offset-2 col-md-9">
+                                      <input type="hidden" class="form-control" id="id" name="id" value="{{ User.id }}" />
+                                    <button type="button" id="btn-Verified"class="btn btn-success">Verified</button>
+                                  </div>
+                              </div>
+                          </div>
+                      </form>
+                      <!-- END FORM-->
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block addmodal %}
+<!-- CONFIRM VERIFIED NUMBER -->
+<div class="modal fade bs-modal-lg" id="ModalVerified" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">OTP</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                          <div class="col-md-2">
+                          </div>
+                          <div class="col-md-1">
+                              <input type="text" class="form-control" name="code1" id="code1">
+                          </div>
+                          <div class="col-md-1">
+                          </div>
+                          <div class="col-md-1">
+                              <input type="text" class="form-control" name="code2" id="code2">
+                          </div>
+                          <div class="col-md-1">
+                          </div>
+                          <div class="col-md-1">
+                              <input type="text" class="form-control" name="code3" id="code3">
+                          </div>
+                          <div class="col-md-1">
+                          </div>
+                          <div class="col-md-1">
+                              <input type="text" class="form-control" name="code4" id="code4">
+                          </div>
+
+                      </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal" id="btn-ResendCode">Re-send</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" id="btn-VerifyCodeNow">Verify</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- CONFIRM VERIFIED NUMBER -->
+{% endblock %}
+
+{% block addjs %}
+
+<!-- TOASTR -->
+{{ asset('plugins/bootstrap-toastr/toastr.min.js') | script_tag }}
+
+<!-- INPUT-MASK BUNDLE-->
+{{ asset('plugins/jquery-inputmask/jquery.inputmask.bundle.min.js') | script_tag }}
+
+<!-- JS INPUT-MASK -->btn-Verified
+{{ asset('js/input-mask/input-mask.js') | script_tag }}
+
+{{ asset('modules/user/profile/main.js') | script_tag }}
+
+{% endblock %}

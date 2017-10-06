@@ -1,0 +1,144 @@
+{% extends "admin::layouts.layout" %}
+
+{% block addcss %}
+
+{% endblock %}
+
+{% block pageheader %}
+    <!-- BEGIN PAGE HEAD-->
+    <div class="page-head">
+        <div class="container">
+            <!-- BEGIN PAGE TITLE -->
+            <div class="page-title">
+                <h1>{{ string_menuname }}
+                    <small>{{ string_active_menu }}</small>
+                </h1>
+            </div>
+            <!-- END PAGE TITLE -->
+        </div>
+    </div>
+    <!-- END PAGE HEAD-->
+
+{% endblock %}
+
+
+{% block breadcrumbs %}
+    <!-- BEGIN PAGE BREADCRUMBS -->
+    <ul class="page-breadcrumb breadcrumb">
+        <li>
+            <a href="{{ url('/home') }}">Home</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a href="javascript:void(0)">{{ string_menuname }}</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            {{ string_active_menu }}
+        </li>
+    </ul>
+    <!-- END PAGE BREADCRUMBS -->
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN VALIDATION STATES-->
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-desktop font-green"></i>
+                        <span class="caption-subject font-green bold uppercase">Finish </span>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    {% if (session('ScsMsg')) %}
+                        <div class="alert alert-success">
+                            <button class="close" data-close="alert"></button>
+                            <span>{{ session('ScsMsg') }}</span>
+                        </div>
+                    {% endif %}
+
+                    {% if (session('ErrMsg')) %}
+                        <div class="alert alert-danger">
+                            <button class="close" data-close="alert"></button>
+                            <span>{{ session('ErrMsg') }}</span>
+                        </div>
+                    {% endif %}
+
+                    {% if (session('WrngMsg')) %}
+                        <div class="alert alert-warning">
+                            <button class="close" data-close="alert"></button>
+                            <span>{{ session('WrngMsg') }}</span>
+                        </div>
+                    {% endif %}
+
+                    {% if (session('InfoMsg')) %}
+                        <div class="alert alert-info">
+                            <button class="close" data-close="alert"></button>
+                            <span>{{ session('InfoMsg') }}</span>
+                        </div>
+                    {% endif %}
+
+                    <div class="mt-element-step">
+                        <div class="row step-line">
+                            <div class="col-md-2 mt-step-col first done">
+                                <div class="mt-step-number bg-white">1</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Wedding Info</div>
+                                <div class="mt-step-content font-grey-cascade">Lengkapi data pernikahan</div>
+                            </div>
+                            <div class="col-md-2 mt-step-col done">
+                                <div class="mt-step-number bg-white">2</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Gallery Image</div>
+                                <div class="mt-step-content font-grey-cascade">Upload Foto Pre-wedding</div>
+                            </div>
+                            <div class="col-md-2 mt-step-col done">
+                                <div class="mt-step-number bg-white">3</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Story of Love</div>
+                                <div class="mt-step-content font-grey-cascade">Moment kesayangan</div>
+                            </div>
+                            <div class="col-md-2 mt-step-col done">
+                                <div class="mt-step-number bg-white">4</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Bridesmaid</div>
+                                <div class="mt-step-content font-grey-cascade">Informasi Pendamping</div>
+                            </div>
+                            <div class="col-md-2 mt-step-col done">
+                                <div class="mt-step-number bg-white">5</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Template</div>
+                                <div class="mt-step-content font-grey-cascade">Pilih Template Website</div>
+                            </div>
+                            <div class="col-md-2 mt-step-col last active">
+                                <div class="mt-step-number bg-white">6</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Finish</div>
+                                <div class="mt-step-content font-grey-cascade">Siap disebarkan</div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="alert alert-success">
+                        <h3 style="text-align: center"><strong>Berhasil!</strong></h3>
+                        <p style="text-align: center">Terima kasih, kamu telah mengisi data pernikahanmu dengan pasanganmu. Langkah selanjutnya, kamu dapat menyebarkan undanganmu.<br>
+                            Kami memiliki fitur premium yang sangat menarik.<br><br>
+                            <a href="javascript:;" class="btn btn-circle btn-lg green-meadow m-icon-big"> Premium
+                                <i class="glyphicon glyphicon-shopping-cart"></i>
+                            </a>
+                            <a href="{{ route('demo',WebsiteID) }}" target="_blank" class="btn btn-circle btn-lg blue m-icon-big"> Demo
+                                <i class="fa fa-refresh"></i>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                <!-- END VALIDATION STATES-->
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block addmodal %}
+{% endblock %}
+
+{% block addjs %}
+
+
+{% endblock %}

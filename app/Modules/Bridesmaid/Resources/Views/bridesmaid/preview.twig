@@ -1,0 +1,93 @@
+{% extends "admin::layouts.layout_blank" %}
+
+{% block addcss %}
+
+{% endblock %}
+
+
+
+
+{% block body %}
+
+    <div class="page-content-inner">
+        <div class="portlet light portlet-fit ">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-microphone font-green"></i>
+                    <span class="caption-subject bold font-green uppercase"> Moment terbaik bersama pasanganmu</span>
+                </div>
+                <div class="actions">
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="mt-timeline-2">
+                    <div class="mt-timeline-line border-grey-steel"></div>
+                    <ul class="mt-container">
+                        {% set x = 1 %}
+                        {% for Story in StoryOfLove %}
+                        <li class="mt-item">
+                            {% if x == 1 %}
+                                <div class="mt-timeline-icon bg-red bg-font-red border-grey-steel">
+                            {% elseif x == 2 %}
+                                <div class="mt-timeline-icon bg-blue bg-font-blue border-grey-steel">
+                            {% elseif x == 3 %}
+                                <div class="mt-timeline-icon bg-green-turquoise bg-font-green-turquoise border-grey-steel">
+                            {% elseif x == 4 %}
+                                <div class="mt-timeline-icon bg-purple-medium bg-font-purple-medium border-grey-steel">
+                            {% endif %}
+                                <i class="icon-reload"></i>
+                            </div>
+                            <div class="mt-timeline-content">
+                                {% if x == 1 %}
+                                    <div class="mt-content-container bg-red bg-font-red border-left-before-red border-red">
+                                {% elseif x == 2 %}
+                                    <div class="mt-content-container bg-blue bg-font-blue border-blue border-right-before-blue">
+                                {% elseif x == 3 %}
+                                    <div class="mt-content-container bg-green-turquoise bg-font-green-turquoise border-left-before-green-turquoise border-green-turquoise">
+                                {% elseif x == 4 %}
+                                    <div class="mt-content-container bg-blue-steel bg-font-blue-steel border-blue-steel border-left-before-blue-steel">
+                                {% endif %}
+                                    <div class="mt-title">
+                                        <h3 class="mt-content-title">{{ Story.title }}</h3>
+                                    </div>
+                                    <div class="mt-author">
+                                        <div class="mt-author-name">
+                                            <a href="javascript:;" class="font-white">{{ Story.website.boy_nick_name }} & {{ Story.website.girl_nick_name }}</a>
+                                        </div>
+                                        <div class="mt-author-notes font-white">{{ call_helpers_two('DateFormat', Story.date_story, "d F Y") }}</div>
+                                    </div>
+                                    <div class="mt-content border-white">
+                                        {% if Story.file %}
+                                            {% set PathStoryofLove  = call_helpers('getPathStoryofLove') %}
+                                            {% set FileImage        = call_helpers_two('get_GenerateLinkImageUrl', PathStoryofLove, Story.file ) %}
+                                        <img  class="timeline-body-img pull-left" src="{{ FileImage }}" width="200"/>
+                                        {% endif %}
+                                        <p>{{ Story.description }}</p>
+                                        {% if (video) %}
+                                        <p>{{ Story.video }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                            {% if x == 4 %}
+                                {% set x = 1 %}
+                            {% else %}
+                                {% set x = x + 1 %}
+                            {% endif %}
+                        {% endfor %}
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block addjs %}
+    {#{{ asset('modules/storyoflove/main.js')|script_tag }}#}
+{% endblock %}

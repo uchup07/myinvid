@@ -1,0 +1,177 @@
+{% extends "admin::layouts.layout" %}
+
+{% block addcss %}
+<!-- FILEINPUT -->
+{{ asset('plugins/bootstrap-fileinput/bootstrap-fileinput.css') | css_tag }}
+{% endblock %}
+
+{% block pageheader %}
+<!-- BEGIN PAGE HEAD-->
+<div class="page-head">
+    <div class="container">
+        <!-- BEGIN PAGE TITLE -->
+        <div class="page-title">
+            <h1>{{ string_menuname }}
+                <small>{{ form_name }}</small>
+            </h1>
+        </div>
+        <!-- END PAGE TITLE -->
+    </div>
+</div>
+<!-- END PAGE HEAD-->
+
+{% endblock %}
+
+
+{% block breadcrumbs %}
+<!-- BEGIN PAGE BREADCRUMBS -->
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="{{ url('/home') }}">Home</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <a href="javascript:void(0)">{{ string_menuname }}</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <span>{{ form_name }}</span>
+    </li>
+</ul>
+<!-- END PAGE BREADCRUMBS -->
+{% endblock %}
+
+{% block body %}
+
+<div class="row">
+  <div class="col-md-12">
+      <!-- BEGIN VALIDATION STATES-->
+      <div class="portlet light">
+          <div class="portlet-body">
+              <div class="tabbable tabbable-tabdrop">
+                  <ul class="nav nav-tabs">
+                      <li>
+                          <a href="{{ route ('profile_info') }}" aria-expanded="false">Member Info</a>
+                      </li>
+                      <li class="active">
+                          <a href="javascript:void(0);" aria-expanded="false">Avatar</a>
+                      </li>
+                      <li>
+                          <a href="{{ route('profile_verified_account') }}"  aria-expanded="false">Verified Account</a>
+                      </li>
+                  </ul>
+                  <div class="tab-content">
+                        {% if (session('ScsMsg')) %}
+                        <div class="alert alert-success">
+                            <strong>Success!</strong> {{ session('ScsMsg') }}
+                        </div>
+                        {% endif %}
+
+                        {% if (session('ErrMsg')) %}
+                        <div class="alert alert-danger">
+                            <strong>Error!</strong> {{ session('ErrMsg') }}
+                        </div>
+                        {% endif %}
+
+                      <!-- FORM -->
+                      <form action="{{ route('profile_avatar_saved') }}" name="form_{{ form }}" id="form_{{ form }}" class="form-horizontal" method="post" enctype="multipart/form-data" >
+                          {{ csrf_field() }}
+                          <div class="form-body">
+
+                              <!-- AVATAR -->
+                              <div class="form-group {% if (errors.has('avatar')) %}has-error{% endif %}">
+                                  <label class="control-label col-md-2">Your Image
+                                      <span class="required"> * </span>
+                                  </label>
+                                    <div class="col-md-6">
+                                        {% if (User.image)%}
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;">
+                                                {{ asset(Avatar) | image }}
+                                            </div>
+                                        </div>
+                                        <div class="clearfix margin-top-10">
+                                            <a href="javascript:;" class="btn red" id="btn-RemoveAvatar"> Remove </a>
+                                         </div>
+                                        {% else %}
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"> </div>
+                                            <div>
+                                                <span class="btn red btn-outline btn-file">
+                                                    <span class="fileinput-new"> Select image </span>
+                                                    <span class="fileinput-exists"> Change </span>
+                                                    <input type="file" name="avatar" id="avatar"> </span>
+                                                <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
+                                            </div>
+                                            {% if (errors.has('avatar')) %}<span class="help-block"> {{ errors.first('avatar') }} </span>{% endif %}
+                                        </div>
+                                        <div class="clearfix margin-top-10">
+                                            <span class="label label-success">NOTE!</span> Please upload your image profile. Maximum 2 MB. </div>
+                                            {% endif %}
+
+                                    </div>
+                              </div>
+                              <!-- END AVATAR -->
+
+
+                              <hr>
+                          </div>
+                          <div class="form-actions">
+                              <div class="row">
+                                  <div class="col-md-offset-2 col-md-9">
+                                      <input type="hidden" class="form-control" id="id" name="id" value="{{ User.id }}" />
+                                      {% if not User.image %}
+                                      <button type="submit" class="btn btn-success" id="btn-SaveAvatar">Save</button>
+                                      {% endif %}
+                                  </div>
+                              </div>
+                          </div>
+                      </form>
+                      <!-- END FORM-->
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block addmodal %}
+<!-- CONFIRM REMOVE AVATAR -->
+<div class="modal fade bs-modal-sm" id="ConfirmRemove" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-danger">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Remove Confirmation!</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure??
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="btn-RemoveAvatarNow">Remove</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- CONFIRM REMOVE AVATAR -->
+{% endblock %}
+
+{% block addjs %}
+<!-- FILE INPUT -->
+{{ asset('plugins/bootstrap-fileinput/bootstrap-fileinput.js') | script_tag }}
+
+<!-- VALIDATION -->
+{{ asset('plugins/jquery-validation/js/jquery.validate.min.js')|script_tag }}
+{{ asset('plugins/jquery-validation/js/additional-methods.min.js')|script_tag }}
+{{ asset('modules/user/profile/validate.js') | script_tag }}
+
+
+<!-- JS -->
+{{ asset('modules/user/profile/main.js') | script_tag }}
+
+{% endblock %}

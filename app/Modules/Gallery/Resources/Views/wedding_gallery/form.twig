@@ -1,0 +1,254 @@
+{% extends "admin::layouts.layout" %}
+
+{% block addcss %}
+    {{ asset('plugins/cubeportfolio/css/cubeportfolio.css')| css_tag }}
+
+
+    {{ asset('plugins/bootstrap-toastr/toastr.min.css') | css_tag }}
+
+    <!-- FILEINPUT -->
+    {{ asset('plugins/bootstrap-fileinput/bootstrap-fileinput.css') | css_tag }}
+{% endblock %}
+
+{% block pageheader %}
+    <!-- BEGIN PAGE HEAD-->
+    <div class="page-head">
+        <div class="container">
+            <!-- BEGIN PAGE TITLE -->
+            <div class="page-title">
+                <h1>{{ string_menuname }}
+                    <small>{{ string_active_menu }}</small>
+                </h1>
+            </div>
+            <!-- END PAGE TITLE -->
+        </div>
+    </div>
+    <!-- END PAGE HEAD-->
+
+{% endblock %}
+
+
+{% block breadcrumbs %}
+    <!-- BEGIN PAGE BREADCRUMBS -->
+    <ul class="page-breadcrumb breadcrumb">
+        <li>
+            <a href="{{ url('/home') }}">Home</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a href="javascript:void(0)">{{ string_menuname }}</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            {{ string_active_menu }}
+        </li>
+    </ul>
+    <!-- END PAGE BREADCRUMBS -->
+{% endblock %}
+
+{% block body %}
+    {% if (session('ScsMsg')) %}
+        <div class="alert alert-success">
+            <button class="close" data-close="alert"></button>
+            <span>{{ session('ScsMsg') }}</span>
+        </div>
+    {% endif %}
+
+    {% if (session('ErrMsg')) %}
+        <div class="alert alert-danger">
+            <button class="close" data-close="alert"></button>
+            <span>{{ session('ErrMsg') }}</span>
+        </div>
+    {% endif %}
+
+    {% if (session('WrngMsg')) %}
+        <div class="alert alert-warning">
+            <button class="close" data-close="alert"></button>
+            <span>{{ session('WrngMsg') }}</span>
+        </div>
+    {% endif %}
+
+    {% if (session('InfoMsg')) %}
+        <div class="alert alert-info">
+            <button class="close" data-close="alert"></button>
+            <span>{{ session('InfoMsg') }}</span>
+        </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN VALIDATION STATES-->
+            <div class="portlet light portlet-fit portlet-form bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-wrench font-green"></i>
+                        <span class="caption-subject font-green bold uppercase">Wedding Gallery </span>
+                    </div>
+                    <div class="actions">
+                        <a href="{{ route('manage_wedding_information_detail', website_id) }}" class="btn btn-info btn-circle" name="btn" value="Nex"><i class="fa fa-reply"></i> Kembali</a>
+                        <a href="{{ route('wedding_storyoflove_form', website_id) }}" class="btn btn-success btn-circle" name="btn" value="Nex"><i class="fa fa-share"></i> Selanjutnya</a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+
+                    <div class="mt-element-step">
+                        <div class="row step-line">
+                            <div class="col-md-2 mt-step-col first done">
+                                <div class="mt-step-number bg-white">1</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Wedding Info</div>
+                                <div class="mt-step-content font-grey-cascade">Lengkapi data pernikahan</div>
+                            </div>
+                            <div class="col-md-2 mt-step-col active">
+                                <div class="mt-step-number bg-white">2</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Gallery Image</div>
+                                <div class="mt-step-content font-grey-cascade">Upload Foto Pre-wedding</div>
+                            </div>
+                            <div class="col-md-2 mt-step-col">
+                                <div class="mt-step-number bg-white">3</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Story of Love</div>
+                                <div class="mt-step-content font-grey-cascade">Moment kesayangan</div>
+                            </div>
+                            <div class="col-md-2 mt-step-col">
+                                <div class="mt-step-number bg-white">4</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Bridesmaid</div>
+                                <div class="mt-step-content font-grey-cascade">Informasi Pendamping</div>
+                            </div>
+                            <div class="col-md-2 mt-step-col">
+                                <div class="mt-step-number bg-white">5</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Template</div>
+                                <div class="mt-step-content font-grey-cascade">Pilih Template Website</div>
+                            </div>
+                            <div class="col-md-2 mt-step-col last">
+                                <div class="mt-step-number bg-white">6</div>
+                                <div class="mt-step-title uppercase font-grey-cascade">Finish</div>
+                                <div class="mt-step-content font-grey-cascade">Siap disebarkan</div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- BEGIN FORM-->
+                    <form action="{{ route('wedding_gallery_saved') }}" name="form_wedding_gallery" id="form_wedding_gallery" class="form-horizontal" method="post" enctype="multipart/form-data">
+                        {{ csrf_field() }}
+                        <div class="form-body">
+                            <!-- UPLOAD FILE -->
+                            <div class="form-body">
+                                <div class="form-group">
+                                    <label class="control-label col-md-1"></label>
+                                    <div class="col-md-3">
+                                        <input type="hidden" id="website_id" name="website_id" value="{{ website_id }}">
+                                        <button type="button" class="btn btn-info mt-ladda-btn ladda-button btn-circle" id="btn-addMoreItem"><i class="fa fa-plus"></i> Tambah</button>
+                                        <button type="submit" class="btn green mt-ladda-btn ladda-button btn-circle" id="btn-StartUpload"><i class="fa fa-cloud-upload"></i> Unggah</button>
+                                    </div>
+                                </div>
+                                    <div id="UploadImage">
+                                    </div>
+                            </div>
+                            <!-- END UPLOAD FILE -->
+                        </div>
+
+
+                    </form>
+                    <!-- END FORM-->
+                </div>
+                <!-- END VALIDATION STATES-->
+            </div>
+        </div>
+    </div>
+
+    {% if(ImageGallery) %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-image font-yellow-casablanca"></i>
+                        <span class="caption-subject bold font-yellow-casablanca uppercase"> Kumpulan Foto Galeri Kamu </span>
+                        <span class="caption-helper">Foto Kamu dan Pasanganmu sebelum/setelah menikah</span>
+                    </div>
+                    <div class="inputs">
+                    </div>
+                </div>
+                <div class="portlet-body" id="loadGallery">
+                    <div id="js-filters-juicy-projects" class="cbp-l-filters-button">
+                        <div data-filter="*" class="cbp-filter-item-active cbp-filter-item btn dark btn-outline uppercase"> All
+                            <div class="cbp-filter-counter"></div>
+                        </div>
+                    </div>
+                    <div class="portfolio-content portfolio-1">
+                        <div id="js-grid-juicy-projects" class="cbp">
+                            {% for image in ImageGallery %}
+                                {% set PathGallery =  call_helpers('getPathGallery') %}
+                                {% set file = call_helpers_two('get_GenerateLinkImage',PathGallery, image.file ) %}
+
+                                <div class="cbp-item">
+                                    <div class="cbp-caption">
+                                        <div class="cbp-caption-defaultWrap">
+                                            <img src="{{ asset(file) }}" alt=""> </div>
+                                        <div class="cbp-caption-activeWrap">
+                                            <div class="cbp-l-caption-alignCenter">
+                                                <div class="cbp-l-caption-body">
+                                                    <a href="{{ asset(file) }}" class="cbp-lightbox cbp-l-caption-buttonRight uppercase btn blue uppercase" data-title="{{ WebsiteInfo.boy_nick_name }} & {{ WebsiteInfo.girl_nick_name }}"><i class="glyphicon glyphicon-zoom-in "></i> Perbesar</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cbp-l-grid-projects-title uppercase text-center uppercase text-center">{{ WebsiteInfo.boy_nick_name }} & {{ WebsiteInfo.girl_nick_name }}</div>
+                                    <div class="cbp-l-grid-projects-desc uppercase text-center uppercase text-center"><a href="javascript:void(0);" class="btn btn-danger btn-circle" name="btn" value="{{ image.id }}" onclick="DeleteGalleryImage({{ image.id }})"><i class="fa fa-trash"></i> Hapus</a></div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block addmodal %}
+    <!-- CONFIRM DELETE -->
+    <div class="modal fade bs-modal-sm" id="ConfirmDelete" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-danger">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Konfirmasi!</h4>
+                </div>
+                <div class="modal-body">
+                    Apakah kamu yakin?
+                    <input type="hidden" id="GalleryID" name="GalleryID">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" id="btn-DeleteGalleryImage">Hapus</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- CONFIRM DELETE -->
+{% endblock %}
+
+{% block addjs %}
+    <!-- JS IMAGE GALLERY -->
+    {{ asset('plugins/cubeportfolio/js/jquery.cubeportfolio.min.js')|script_tag }}
+    {{ asset('js/image-gallery/image-gallery.js')|script_tag }}
+
+
+
+    <!-- NOTIFICATION -->
+    {{ asset('plugins/bootstrap-toastr/toastr.min.js')|  script_tag }}
+    <script>
+        var y = {{ count_gallery }};
+    </script>
+    <!-- JS -->
+    {{ asset('modules/gallery/main.js') | script_tag }}
+
+
+    <!-- FILE INPUT -->
+    {{ asset('plugins/bootstrap-fileinput/bootstrap-fileinput.js') | script_tag }}
+
+
+
+{% endblock %}

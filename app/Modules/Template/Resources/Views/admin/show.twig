@@ -1,0 +1,423 @@
+{% extends "admin::layouts.layout" %}
+
+{% block addcss %}
+    <!-- DATATABLE -->
+    {{ asset('plugins/datatables/datatables.min.css')|css_tag }}
+    {{ asset('plugins/datatables/plugins/bootstrap/datatables.bootstrap.css')|css_tag }}
+
+    <!-- MODAL -->
+    {{ asset('plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css')|css_tag }}
+    {{ asset('plugins/bootstrap-modal/css/bootstrap-modal.css')|css_tag }}
+
+    <!-- FILE INPUT -->
+    {{ asset('plugins/bootstrap-fileinput/bootstrap-fileinput.css') | css_tag }}
+
+    <!-- NOTIFICATION -->
+    {{ asset('plugins/bootstrap-toastr/toastr.min.css') | css_tag }}
+
+    <!-- DATEPICKER  -->
+    {{ asset('plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')|css_tag }}
+
+{% endblock %}
+
+
+{% block pageheader %}
+    <!-- BEGIN PAGE HEAD-->
+    <div class="page-head">
+        <div class="container">
+            <!-- BEGIN PAGE TITLE -->
+            <div class="page-title">
+                <h1>{{ string_menuname }}
+                    <small>List {{ string_menuname }}</small>
+                </h1>
+            </div>
+            <!-- END PAGE TITLE -->
+        </div>
+    </div>
+    <!-- END PAGE HEAD-->
+
+{% endblock %}
+
+
+{% block breadcrumbs %}
+    <!-- BEGIN PAGE BREADCRUMBS -->
+    <ul class="page-breadcrumb breadcrumb">
+        <li>
+            <a href="{{ url('/home') }}">Home</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a href="javascript:void(0)">Admin</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <span>{{ string_menuname }}</span>
+        </li>
+    </ul>
+    <!-- END PAGE BREADCRUMBS -->
+{% endblock %}
+
+
+{% block body %}
+    {% if ScsMsg %}
+        <div class="alert alert-success">
+            <button class="close" data-close="alert"></button>
+            <span>{{ ScsMsg }}</span>
+        </div>
+    {% endif %}
+
+    {% if (session('ScsMsg')) %}
+        <div class="alert alert-success">
+            <button class="close" data-close="alert"></button>
+            <span>{{ session('ScsMsg') }}</span>
+        </div>
+    {% endif %}
+
+    {% if (session('ErrMsg')) %}
+        <div class="alert alert-danger">
+            <button class="close" data-close="alert"></button>
+            <span>{{ session('ErrMsg') }}</span>
+        </div>
+    {% endif %}
+
+    {% if (session('WrngMsg')) %}
+        <div class="alert alert-warning">
+            <button class="close" data-close="alert"></button>
+            <span>{{ session('WrngMsg') }}</span>
+        </div>
+    {% endif %}
+
+    {% if (session('InfoMsg')) %}
+        <div class="alert alert-info">
+            <button class="close" data-close="alert"></button>
+            <span>{{ session('InfoMsg') }}</span>
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-history font-yellow-casablanca"></i>
+                        <span class="caption-subject bold font-yellow-casablanca uppercase"> {{ string_active_menu }} </span>
+                        <span class="caption-helper">Daftar Momen kesayangan bersama pasanganmu</span>
+                    </div>
+                    <div class="inputs">
+                        <a type="button" class="btn btn-default btn-sm btn-circle" href="javascript:void(0);" title="Form" data-toggle="tooltip" id="btn-AddTemplate"><i class="glyphicon glyphicon-plus"></i> Form</a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+
+                    <table class="table table-hover table-light" id="tbl_template">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Template</th>
+                            <th>Harga</th>
+                            <th>Foto</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <!--tbody section is required-->
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- END EXAMPLE TABLE PORTLET-->
+        </div>
+    </div>
+{% endblock %}
+
+{% block addmodal %}
+    <div id="ModalAddTemplate" class="modal fade" tabindex="-1" data-width="760">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            <h4 class="modal-title">Tambah Template</h4>
+        </div>
+        <div class="modal-body">
+            <!-- BEGIN FORM-->
+            <form name="form_template" id="form_template" class="form-horizontal" method="post" enctype="multipart/form-data">
+                {{ csrf_field() }}
+
+                <div class="form-body">
+                    <!-- PARAM -->
+                    <input type="hidden" name="template_id" id="template_id">
+                    <input type="hidden" name="statusform" id="statusform">
+                    <!-- PARAM -->
+
+                    <!-- NAME -->
+                    <div class="form-group" id="row-name">
+                        <label class="control-label col-md-3">Name
+                            <span class="required"> * </span>
+                        </label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control maxlength" maxlength="150" id="name" name="name" placeholder="Masukan Nama template" autocomplete="off" value="">
+                        </div>
+                    </div>
+                    <!-- END NAME -->
+
+                    <!-- DEMO URL -->
+                    <div class="form-group" id="row-demo_url">
+                        <label class="control-label col-md-3">Demo url
+                        </label>
+                        <div class="col-md-8">
+                            <textarea type="text" class="form-control"  id="demo_url" name="demo_url" placeholder="Masukan Url Demo" autocomplete="off" value=""></textarea>
+                        </div>
+                    </div>
+                    <!-- END DEMO URL -->
+
+                    <!-- PRICE UP -->
+                    <div class="form-group" id="row-price_up">
+                        <label class="control-label col-md-3">Harga Reseller
+                            <span class="required"> * </span>
+                        </label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control maxlength rupiah" maxlength="15" id="price_up" name="price_up" placeholder="Rp 0,-" autocomplete="off" value="">
+                        </div>
+                    </div>
+                    <!-- END PRICE UP -->
+
+                    <!-- PRICE -->
+                    <div class="form-group" id="row-price">
+                        <label class="control-label col-md-3">Harga Jual
+                            <span class="required"> * </span>
+                        </label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control maxlength rupiah" maxlength="15" id="price" name="price" placeholder="Rp 0,-" autocomplete="off" value="">
+                        </div>
+                    </div>
+                    <!-- END PRICE -->
+
+                    <!-- DESKTOP -->
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Desktop
+                        </label>
+                        <div class="col-md-6">
+                            <div id="imageNewDesktop">
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <div class="input-group input-large">
+                                        <div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
+                                            <i class="fa fa-file fileinput-exists"></i>&nbsp;
+                                            <span class="fileinput-filename"> </span>
+                                        </div>
+                                        <span class="input-group-addon btn default btn-file">
+                                    <span class="fileinput-new"> Pilih Design </span>
+                                    <span class="fileinput-exists"> Ubah </span>
+                                        <input type="file"  id="imageFileDesktop" name="imageFileDesktop"> </span>
+                                        <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Hapus </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="imageEditDesktop" style="display: none;">
+                                <div class="input-group">
+                                    <input class="form-control" type="text" id="imageFileEditDesktop" name="imageFileEditDesktop" readonly>
+                                    <span class="input-group-btn">
+                                        <button class="btn red" type="button" id="btn-DeleteImageDesktopEdit">Hapus</button>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END DESKTOP -->
+
+                    <!-- TABLET -->
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Tab
+                        </label>
+                        <div class="col-md-6">
+                            <div id="imageNewTablet">
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <div class="input-group input-large">
+                                        <div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
+                                            <i class="fa fa-file fileinput-exists"></i>&nbsp;
+                                            <span class="fileinput-filename"> </span>
+                                        </div>
+                                        <span class="input-group-addon btn default btn-file">
+                                    <span class="fileinput-new"> Pilih Design </span>
+                                    <span class="fileinput-exists"> Ubah </span>
+                                        <input type="file"  id="imageFileTablet" name="imageFileTablet"> </span>
+                                        <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Hapus </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="imageEditTablet" style="display: none;">
+                                <div class="input-group">
+                                    <input class="form-control" type="text" id="imageFileEditTablet" name="imageFileEditTablet" readonly>
+                                    <span class="input-group-btn">
+                                        <button class="btn red" type="button" id="btn-DeleteImageTabletEdit">Hapus</button>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END TABLET -->
+
+                    <!-- MOBILE -->
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Smartphone
+                        </label>
+                        <div class="col-md-6">
+                            <div id="imageNewMobile">
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <div class="input-group input-large">
+                                        <div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
+                                            <i class="fa fa-file fileinput-exists"></i>&nbsp;
+                                            <span class="fileinput-filename"> </span>
+                                        </div>
+                                        <span class="input-group-addon btn default btn-file">
+                                    <span class="fileinput-new"> Pilih Design </span>
+                                    <span class="fileinput-exists"> Ubah </span>
+                                        <input type="file"  id="imageFileMobile" name="imageFileMobile"> </span>
+                                        <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Hapus </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="imageEditMobile" style="display: none;">
+                                <div class="input-group">
+                                    <input class="form-control" type="text" id="imageFileEditMobile" name="imageFileEditMobile" readonly>
+                                    <span class="input-group-btn">
+                                        <button class="btn red" type="button" id="btn-DeleteImageMobileEdit">Hapus</button>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END MOBILE -->
+
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-3 col-md-9">
+                                    <button type="submit" class="btn btn-success btn-circle" name="btn" value="Save"><i class="fa fa-save"></i> Simpan</button>
+                                    <button type="button" class="btn btn-warning btn-circle" name="btn" value="Reset" id="btn-ResetFormTemplate"><i class="fa fa-refresh"></i> Reset</button>
+                                    <button type="button" class="btn btn-default btn-circle" name="btn" value="Tutup" data-dismiss="modal" aria-hidden="true"><i class="fa fa-remove"></i> Tutup</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Delete -->
+    <div class="modal fade" id="ConfirmDelete" tabindex="-1">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title">Konfirmasi Hapus!</h4>
+                </div>
+                <div class="modal-body">
+                    Apakah kamu yakin??
+                    <input type="hidden" name="id" id="id">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="ActionDelete()">Hapus</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+    </div>
+    <!-- Delete -->
+
+    <!-- Delete Image Desktop -->
+    <div class="modal fade" id="ConfirmDeleteImageDesktop" tabindex="-1">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Konfirmasi Hapus!</h4>
+            </div>
+            <div class="modal-body">
+                Apakah kamu yakin??
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-danger" id="btn-ActionDeleteImageDesktop">Hapus</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- Delete Image Desktop -->
+
+    <!-- Delete Image Tablet -->
+    <div class="modal fade" id="ConfirmDeleteImageTablet" tabindex="-1">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Konfirmasi Hapus!</h4>
+            </div>
+            <div class="modal-body">
+                Apakah kamu yakin??
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-danger" id="btn-ActionDeleteImageTablet">Hapus</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- Delete Image Tablet -->
+
+    <!-- Delete Image Mobile -->
+    <div class="modal fade" id="ConfirmDeleteImageMobile" tabindex="-1">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Konfirmasi Hapus!</h4>
+            </div>
+            <div class="modal-body">
+                Apakah kamu yakin??
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-danger" id="btn-ActionDeleteImageMobile">Hapus</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- Delete Image Mobile -->
+
+
+{% endblock %}
+
+{% block addjs %}
+    <!-- DATATABLE -->
+    {{ asset('plugins/datatables/datatables.min.js') | script_tag }}
+    {{ asset('plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') | script_tag }}
+
+    <!-- DATEPICKER -->
+    {{ asset('plugins/moment.min.js') | script_tag }}
+    {{ asset('plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') | script_tag }}
+    {{ asset('js/datetimepicker/datetime_picker.js') | script_tag }}
+
+    <!-- INPUT-MASK BUNDLE-->
+    {{ asset('plugins/jquery-inputmask/jquery.inputmask.bundle.min.js')|script_tag }}
+    {{ asset('js/input-mask/input-mask.js')|script_tag }}
+
+
+    <!-- MODAL -->
+    {{ asset('plugins/bootstrap-modal/js/bootstrap-modalmanager.js') | script_tag }}
+    {{ asset('plugins/bootstrap-modal/js/bootstrap-modal.js') | script_tag }}
+    {{ theme_asset('admin::js/script/ui-extended-modals.min.js') | script_tag }}
+
+
+    <!-- FILE INPUT -->
+    {{ asset('plugins/bootstrap-fileinput/bootstrap-fileinput.js') | script_tag }}
+
+    <!-- NOTIFICATION -->
+    {{ asset('plugins/bootstrap-toastr/toastr.min.js')|  script_tag }}
+
+    <script>
+        var ROUTE_DATATABLE = '{{ route('template_datatables', WebsiteID) }}';
+
+
+
+    </script>
+    {{ asset('modules/template/datatable.js')|script_tag }}
+    {{ asset('modules/template/main.js')|script_tag }}
+{% endblock %}

@@ -1,0 +1,65 @@
+{{ asset('plugins/cubeportfolio/css/cubeportfolio.css')| css_tag }}
+
+<div class="form-group">
+    <label class="control-label col-md-1">Preview</label>
+    <div class="col-md-11">
+        <div class="portfolio-content portfolio-1">
+            <div id="js-grid-juicy-projects" class="cbp">
+                {% set PathTemplate =  call_helpers('getPathTemplate') %}
+
+                {% set desktop = call_helpers_two('get_GenerateLinkImage',PathTemplate, ImageTemplate.preview_desktop ) %}
+                <div class="cbp-item">
+                    <div class="cbp-caption">
+                        <div class="cbp-caption-defaultWrap">
+                            <img src="{{ asset(desktop) }}" alt=""> </div>
+                        <div class="cbp-caption-activeWrap">
+                            <div class="cbp-l-caption-alignCenter">
+                                <div class="cbp-l-caption-body">
+                                    <a href="{{ asset(desktop) }}" class="cbp-lightbox cbp-l-caption-buttonRight uppercase btn blue uppercase" data-title="Dekstop version"><i class="glyphicon glyphicon-zoom-in "></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cbp-l-grid-projects-title uppercase text-center uppercase text-center">DESKTOP VERSION</div>
+                </div>
+
+                {% set tablet = call_helpers_two('get_GenerateLinkImage',PathTemplate, ImageTemplate.preview_tablet ) %}
+                <div class="cbp-item">
+                    <div class="cbp-caption">
+                        <div class="cbp-caption-defaultWrap">
+                            <img src="{{ asset(tablet) }}" alt=""> </div>
+                        <div class="cbp-caption-activeWrap">
+                            <div class="cbp-l-caption-alignCenter">
+                                <div class="cbp-l-caption-body">
+                                    <a href="{{ asset(tablet) }}" class="cbp-lightbox cbp-l-caption-buttonRight uppercase btn blue uppercase" data-title="Tablet version"><i class="glyphicon glyphicon-zoom-in "></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cbp-l-grid-projects-title uppercase text-center uppercase text-center">TABLET VERSION</div>
+                </div>
+
+                {% set mobile = call_helpers_two('get_GenerateLinkImage',PathTemplate, ImageTemplate.preview_mobile ) %}
+                <div class="cbp-item">
+                    <div class="cbp-caption">
+                        <div class="cbp-caption-defaultWrap">
+                            <img src="{{ asset(mobile) }}" alt=""> </div>
+                        <div class="cbp-caption-activeWrap">
+                            <div class="cbp-l-caption-alignCenter">
+                                <div class="cbp-l-caption-body">
+                                    <a href="{{ asset(mobile) }}" class="cbp-lightbox cbp-l-caption-buttonRight uppercase btn blue uppercase" data-title="Mobile version"><i class="glyphicon glyphicon-zoom-in "></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cbp-l-grid-projects-title uppercase text-center uppercase text-center">MOBILE VERSION</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JS IMAGE GALLERY -->
+{{ asset('plugins/cubeportfolio/js/jquery.cubeportfolio.min.js')|script_tag }}
+{{ asset('js/image-gallery/image-gallery.js')|script_tag }}
