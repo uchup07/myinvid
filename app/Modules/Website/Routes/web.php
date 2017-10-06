@@ -15,6 +15,7 @@ Route::group(['prefix' => 'website','middleware' => 'auth'], function () {
     Route::get('/create', 'WebsiteCreateController@formInformation')->name('create_wedding_information');
     Route::post('/create', 'WebsiteCreateController@saveInformation')->name('create_wedding_information_saved');
     Route::get('/finish/{id}', 'FinishWebsiteController@showFinish')->name('wedding_finish');
+
 });
 
 Route::group(['prefix' => 'website/manage','middleware' => 'auth'], function () {
@@ -22,4 +23,5 @@ Route::group(['prefix' => 'website/manage','middleware' => 'auth'], function () 
     Route::get('/detail/{id}', 'ManageWebsiteController@formEditInformation')->name('manage_wedding_information_detail');
     Route::get('/datatables', 'ManageWebsiteController@datatables')->name('manage_wedding_information_datatables');
     Route::post('/updated', 'ManageWebsiteController@saveInformation')->name('manage_wedding_information_saved');
+    Route::post('/check_domain', 'ManageWebsiteController@check_domain')->name('create_wedding_check_domain');
 });

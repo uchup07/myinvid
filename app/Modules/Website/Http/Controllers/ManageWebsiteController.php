@@ -275,7 +275,11 @@ class ManageWebsiteController extends Controller
         }
     }
 
+    public function check_domain(Request $request){
+        $Key                                                 = $request->key;
 
+
+    }
     /**
      * Processing Save Image File.
      * @param \Illuminate\Http\UploadedFile Get Uploaded file for save it on server folder

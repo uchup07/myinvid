@@ -21,6 +21,11 @@
 
 </head>
 <!-- END HEAD -->
+
+{% set Logo         = call_helpers_two('getSettingInfo', config_get('app.setting_id'),'logo') %}
+{% set PathImage    = call_helpers('getPathLogo') %}
+{% set UrlLogo      = call_helpers_two('get_GenerateLinkImageUrl', PathImage, Logo) %}
+
 <body class="page-container-bg-solid">
     <div class="page-wrapper">
         <div class="page-wrapper-row">
@@ -115,7 +120,7 @@
 
 
                          <!-- BEGIN PAGE CONTENT BODY -->
-                         <div class="page-content">
+                         <div class="page-content{% block pageclass %}{% endblock %}">
                              <div class="container">
 
                                  {% block breadcrumbs %}

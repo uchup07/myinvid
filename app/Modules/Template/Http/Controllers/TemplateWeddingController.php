@@ -22,6 +22,14 @@ use File;
 
 class TemplateWeddingController extends Controller
 {
+    protected $_data                                = array();
+
+    public function __construct()
+    {
+        $this->_data['string_menuname']             = 'Template';
+    }
+
+
 
     public function showTemplate($WebsiteID){
         $this->_data['state']                       = 'add';

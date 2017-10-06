@@ -20,15 +20,13 @@ class DemoByIdController extends Controller
 
 
     public function showDemoPreview($WebsiteID,$TemplateID){
-        //$Template                                       = TemplateModel::find($TemplateID);
+        $Template                                       = TemplateModel::find($TemplateID);
         $Website                                        = WebsiteModel::find($WebsiteID);
-        //$Gallery                                        = GalleryModel::where('website_id','=',$WebsiteID)->get();
-        //$StoryOfLove                                    = StoryOfLoveModel::where('website_id','=',$WebsiteID)->get();
-        //$Bridesmaid                                     = BridesmaidModel::where('website_id','=',$WebsiteID)->get();
+        $Gallery                                        = GalleryModel::where('website_id','=',$WebsiteID)->get();
+        $StoryOfLove                                    = StoryOfLoveModel::where('website_id','=',$WebsiteID)->get();
+        $Bridesmaid                                     = BridesmaidModel::where('website_id','=',$WebsiteID)->get();
 
-        dd($Website->stories);
-
-        /*Theme::setActive($Template->slug);
+        Theme::setActive($Template->slug);
 
         $this->_data['WebsiteInfo']                     = $Website;
         $this->_data['GalleryInfo']                     = $Gallery;
@@ -40,7 +38,7 @@ class DemoByIdController extends Controller
         $this->_data['UrlGallery']                      = url('/')."/".getPathGallery(); // Image Gallery //
         $this->_data['UrlStoryOfLove']                  = url('/')."/".getPathStoryofLove(); // Image Story of Love //
         $this->_data['UrlBridesmaid']                   = url('/')."/".getPathBridesmaid(); // Image Bridesmaid //
-        ### PATH IMAGE ###*/
+        ### PATH IMAGE ###
 
     }
 

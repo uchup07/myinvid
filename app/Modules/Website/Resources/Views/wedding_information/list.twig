@@ -99,9 +99,13 @@
             <!-- BEGIN VALIDATION STATES-->
             <div class="portlet light portlet-fit portlet-form bordered">
                 <div class="portlet-title">
-                    <div class="actions">
-                        <a href="{{ route('wedding_gallery_form', WebsiteID) }}" class="btn btn-info btn-circle" name="btn" value="Nex"><i class="fa fa-reply"></i> Kembali</a>
-                        <a href="{{ route('wedding_bridesmaid_show', WebsiteID) }}" class="btn btn-success btn-circle" name="btn" value="Nex"><i class="fa fa-share"></i> Selanjutnya</a>
+                    <div class="caption">
+                        <i class="fa fa-history font-yellow-casablanca"></i>
+                        <span class="caption-subject bold font-yellow-casablanca uppercase"> {{ string_active_menu }} </span>
+                        <span class="caption-helper">Daftar Website kamu</span>
+                    </div>
+                    <div class="inputs">
+                        <a type="button" class="btn btn-default btn-sm btn-circle" href="{{ route('create_wedding_information') }}" title="Form" data-toggle="tooltip" id="btn-AddStory"><i class="glyphicon glyphicon-plus"></i> Create Website</a>
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -150,17 +154,6 @@
         <div class="col-md-12">
             <!-- BEGIN EXAMPLE TABLE PORTLET-->
             <div class="portlet light">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="fa fa-history font-yellow-casablanca"></i>
-                        <span class="caption-subject bold font-yellow-casablanca uppercase"> {{ string_active_menu }} </span>
-                        <span class="caption-helper">Daftar Momen kesayangan bersama pasanganmu</span>
-                    </div>
-                    <div class="inputs">
-                        <a type="button" class="btn blue btn-default btn-sm btn-circle" href="javascript:void(0);" title="Preview" id="btn-PreviewStory" data-toggle="tooltip"><i class="fa fa-hand-o-right"></i> Preview</a>
-                        <a type="button" class="btn btn-default btn-sm btn-circle" href="javascript:void(0);" title="Form" data-toggle="tooltip" id="btn-AddStory"><i class="glyphicon glyphicon-plus"></i> Form</a>
-                    </div>
-                </div>
                 <div class="portlet-body">
 
                     <table class="table table-hover table-light" id="tbl_manage_wedding">

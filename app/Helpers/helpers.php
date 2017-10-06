@@ -154,6 +154,21 @@ if (! function_exists('get_active_user')) {
     }
 }
 
+if (! function_exists('getSettingInfo')) {
+    /**
+     * @param id,field
+     * @return field
+     */
+    function getSettingInfo($id,$Field)
+    {
+        $Setting                = \App\Modules\Setting\Models\Setting::find($id);
+        if($Setting){
+            return $Setting->$Field;
+        }
+        return;
+    }
+}
+
 if (! function_exists('createMenu')) {
     /**
      * @param integer
@@ -551,6 +566,199 @@ if (! function_exists('get_ListTemplate')) {
         }
         return $output;
 
+    }
+}
+
+if (! function_exists('CreateInvoice')) {
+    /**
+     * @return array
+     */
+    function CreateInvoice($ArrParam)
+    {
+        $UserID                     = $ArrParam['user_id'];
+        $WebsiteID                  = $ArrParam['website_id'];
+        $DomainInfo                 = $ArrParam['domain_info']; ### 1 = Subdomain | 2 = Domain ###
+        $Domain                     = $ArrParam['domain'];
+        $AdditionalPrice            = $ArrParam['additional_price'];
+        $AdditionalNote             = $ArrParam['additional_note'];
+        $Discount                   = $ArrParam['discount'];
+        $StatusPaid                 = $ArrParam['paid'];
+        $Detail                     = $ArrParam['detail'];
+
+
+
+        if($DomainInfo == 1){
+            $Domain                 = "http://".$Domain.".myinvitation.id";
+        }else{
+            $Domain                 = $Domain;
+        }
+
+        $DateTransaction            = date('Y-m-d H:i:s');
+
+        $date                       = $DateTransaction;
+        $date                       = strtotime($date);
+        $date                       = strtotime("+7 day", $date);
+        $DateExpirate               = date("Y-m-d H:i:s",$date);
+
+
+        $Invoice                    = new \App\Modules\Invoice\Models\Invoice();
+        $Invoice->user_id           = $UserID;
+        $Invoice->website_id        = $WebsiteID;
+        $Invoice->domain_info       = $DomainInfo;
+        $Invoice->domain            = $Domain;
+        $Invoice->additional_price  = $AdditionalPrice;
+        $Invoice->discount          = $Discount;
+        $Invoice->paid              = $StatusPaid;
+        $Invoice->date_transaction  = $DateTransaction;
+        $Invoice->date_expired      = $DateExpirate;
+        $Invoice->created_by        = $UserID;
+
+        try{
+            $Invoice->save();
+            $NoInvoice              = date('ymd').sprintf("%04s",$Invoice->id);
+        }catch (\Exception $e){
+            $ErrorData              = array(
+                "user_id"           => $UserID,
+                "website_id"        => $WebsiteID,
+                "domain_info"       => $DomainInfo,
+                "domain"            => $Domain,
+                "additional_price"  => $AdditionalPrice,
+                "discount"          => $Discount,
+                "paid"              => $StatusPaid
+            );
+
+            \Regulus\ActivityLog\Models\Activity::log([
+                'contentId'   => 0,
+                'contentType' => 'SaveFeaturePremium',
+                'action'      => 'CreateInvoice',
+                'description' => "Ada Kesalahan pada Pembuatan Invoice Baru",
+                'details'     => $e->getMessage(),
+                'data'        => json_encode($ErrorData),
+                'updated'     => $UserID
+            ]);
+
+            $Result                             = array(
+                "status"                        => false,
+                "message"                       => "Maaf, ada kesalahan teknis. Mohon hubungi web development",
+                "reference"                     => "ID Website ".$WebsiteID
+            );
+            return $Result;
+        }
+
+        if($Detail){
+            $arrTotal           = array();
+            foreach($Detail as $item){
+                $InvoiceDetail                  = new \App\Modules\Invoice\Models\InvoiceDetail();
+                $InvoiceDetail->invoice_id      = $Invoice->id;
+                $InvoiceDetail->note            = $item['note'];
+                $InvoiceDetail->price           = $item['price'];
+                $InvoiceDetail->discount        = $item['discount'];
+                $InvoiceDetail->additional      = $item['additional'];
+                $InvoiceDetail->additional_note = $item['additional_note'];
+                $InvoiceDetail->total           = $item['total'];
+                $InvoiceDetail->created_by      = $UserID;
+                try{
+                    array_push($arrTotal,$item['total']);
+                    $InvoiceDetail->save();
+                }catch (\Exception $e){
+                    $ErrorData              = array(
+                        "invoice_id"        => $Invoice->id,
+                        "website_id"        => $WebsiteID,
+                        "note"              => $item['note'],
+                        "price"             => $item['price'],
+                        "discount"          => $item['discount'],
+                        "additional"        => $item['additional'],
+                        "additional_note"   => $item['additional_note'],
+                        "total"             => $item['total'],
+                        "user_id"           => $UserID
+                    );
+
+                    \Regulus\ActivityLog\Models\Activity::log([
+                        'contentId'   => $Invoice->id,
+                        'contentType' => 'SaveFeaturePremium',
+                        'action'      => 'CreateInvoice Detail',
+                        'description' => "Ada Kesalahan pada Penginputan detail Invoice",
+                        'details'     => $e->getMessage(),
+                        'data'        => json_encode($ErrorData),
+                        'updated'     => $UserID
+                    ]);
+                }
+
+                $TotalDetail                            = array_sum($arrTotal);
+                $InvoiceUpdate                          = \App\Modules\Invoice\Models\Invoice::find($Invoice->id);
+                $InvoiceUpdate->invoice_number          = $NoInvoice;
+                $NominalDiscount                        = $Discount * $TotalDetail / 100;
+                $Total                                  = $TotalDetail + $AdditionalPrice - $NominalDiscount;
+
+                $InvoiceUpdate->total                   = $Total;
+                $InvoiceUpdate->updated_by              = $UserID;
+                try{
+                    $InvoiceUpdate->save();
+                    $Result                             = array(
+                        "status"                        => true,
+                        "message"                       => "No. Pesanan kamu ".$NoInvoice,
+                        "invoice_id"                    => $Invoice->id
+                    );
+                    return $Result;
+                }catch (\Exception $e){
+                    $ErrorData              = array(
+                        "user_id"           => $UserID,
+                        "website_id"        => $WebsiteID,
+                        "domain_info"       => $DomainInfo,
+                        "no_pesanan"        => $NoInvoice,
+                        "additional_price"  => $AdditionalPrice,
+                        "discount"          => $NominalDiscount,
+                        "total"             => $Total
+                    );
+
+                    \Regulus\ActivityLog\Models\Activity::log([
+                        'contentId'   => $Invoice->id,
+                        'contentType' => 'SaveFeaturePremium',
+                        'action'      => 'CreateInvoice',
+                        'description' => "Ada Kesalahan pada Update Invoice Total",
+                        'details'     => $e->getMessage(),
+                        'data'      => json_encode($ErrorData),
+                        'updated'     => $UserID
+                    ]);
+
+                    $Result                             = array(
+                        "status"                        => false,
+                        "message"                       => "Maaf, ada kesalahan teknis. Mohon hubungi web development",
+                        "reference"                     => "No. Pesanan ".$NoInvoice,
+                        "invoice_id"                    => $Invoice->id
+                    );
+                    return $Result;
+                }
+            }
+        }else{
+            $ErrorData              = array(
+                "user_id"           => $UserID,
+                "website_id"        => $WebsiteID,
+                "domain_info"       => $DomainInfo,
+                "domain"            => $Domain,
+                "additional_price"  => $AdditionalPrice,
+                "discount"          => $Discount,
+                "paid"              => $StatusPaid
+            );
+
+            \Regulus\ActivityLog\Models\Activity::log([
+                'contentId'   => $Invoice->id,
+                'contentType' => 'SaveFeaturePremium',
+                'action'      => 'CreateInvoice',
+                'description' => "Ada Kesalahan pada Pembuatan Invoice Baru",
+                'details'     =>  "Detail transaksi tidak ditemukan",
+                'data'        => json_encode($ErrorData),
+                'updated'     => $UserID
+            ]);
+
+
+            $Result                             = array(
+                "status"                        => false,
+                "message"                       => "Maaf, ada kesalahan teknis. Mohon hubungi web development",
+                "reference"                     => "ID Website ".$WebsiteID.". Detail transaksi tidak ditemukan"
+            );
+            return $Result;
+        }
     }
 }
 

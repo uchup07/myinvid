@@ -1,0 +1,564 @@
+{% extends "admin::layouts.layout" %}
+
+{% block addcss %}
+{{ asset('plugins/select2/css/select2.min.css')| css_tag }}
+{{ asset('plugins/select2/css/select2-bootstrap.min.css')| css_tag }}
+
+<!-- DATEPICKER  -->
+{{ asset('plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')|css_tag }}
+
+<!-- FILEINPUT -->
+{{ asset('plugins/bootstrap-fileinput/bootstrap-fileinput.css') | css_tag }}
+
+{% endblock %}
+
+{% block pageheader %}
+<!-- BEGIN PAGE HEAD-->
+<div class="page-head">
+    <div class="container">
+        <!-- BEGIN PAGE TITLE -->
+        <div class="page-title">
+            <h1>{{ string_menuname }}
+                <small>{{ form_name }}</small>
+            </h1>
+        </div>
+        <!-- END PAGE TITLE -->
+    </div>
+</div>
+<!-- END PAGE HEAD-->
+
+{% endblock %}
+
+
+{% block breadcrumbs %}
+<!-- BEGIN PAGE BREADCRUMBS -->
+<ul class="page-breadcrumb breadcrumb">
+    <li>
+        <a href="{{ url('/home') }}">Home</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <a href="javascript:void(0)">{{ string_menuname }}</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <span>{{ form_name }}</span>
+    </li>
+</ul>
+<!-- END PAGE BREADCRUMBS -->
+{% endblock %}
+
+{% block body %}
+
+<div class="row">
+  <div class="col-md-12">
+      <!-- BEGIN VALIDATION STATES-->
+      <div class="portlet light">
+          <div class="portlet-title">
+              <div class="caption">
+                  <span class="caption-subject bold uppercase font-dark">{{ Setting.project_name }}</span>
+                  <span class="caption-helper"><i>information...</i></span>
+              </div>
+          </div>
+          <div class="portlet-body">
+
+                        {% if (session('ScsMsg')) %}
+                        <div class="alert alert-success">
+                            <strong>Success!</strong> {{ session('ScsMsg') }}
+                        </div>
+                        {% endif %}
+
+                        {% if (session('ErrMsg')) %}
+                        <div class="alert alert-danger">
+                            <strong>Error!</strong> {{ session('ErrMsg') }}
+                        </div>
+                        {% endif %}
+
+                      <!-- FORM -->
+                      <form action="{{ route('setting_saved') }}" name="form_{{ form }}" id="form_{{ form }}" class="form-horizontal" method="post" enctype="multipart/form-data">
+                          {{ csrf_field() }}
+                          <div class="form-body">
+                              <!-- LOGO -->
+                              <div class="form-group {% if (errors.has('project_name')) %}has-error{% endif %}">
+                                  <label class="control-label col-md-2">Logo
+                                      <span class="required"> * </span>
+                                  </label>
+                                    <div class="col-md-6">
+                                        {% if (Setting.logo)%}
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;">
+                                                {{ asset(Logos) | image }}
+                                            </div>
+                                        </div>
+                                        <div class="clearfix margin-top-10">
+                                            <a href="javascript:;" class="btn red" id="btn-RemoveLogo"> Remove </a>
+                                         </div>
+                                        {% else %}
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"> </div>
+                                            <div>
+                                                <span class="btn red btn-outline btn-file">
+                                                    <span class="fileinput-new"> Select image </span>
+                                                    <span class="fileinput-exists"> Change </span>
+                                                    <input type="file" name="logo" id="logo"> </span>
+                                                <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
+                                            </div>
+                                            {% if (errors.has('logo')) %}<span class="help-block"> {{ errors.first('logo') }} </span>{% endif %}
+                                        </div>
+                                        <div class="clearfix margin-top-10">
+                                            <span class="label label-success">NOTE!</span> Please upload your Logo. Maximum 2 MB. </div>
+                                        {% endif %}
+                                    </div>
+                              </div>
+                              <!-- END LOGO -->
+
+                              <!-- ICON -->
+                              <div class="form-group {% if (errors.has('icon')) %}has-error{% endif %}">
+                                  <label class="control-label col-md-2">Icon
+                                      <span class="required"> * </span>
+                                  </label>
+                                    <div class="col-md-6">
+                                        {% if (Setting.icon)%}
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;">
+                                                {{ asset(Icons) | image }}
+                                            </div>
+                                        </div>
+                                        <div class="clearfix margin-top-10">
+                                            <a href="javascript:;" class="btn red" id="btn-RemoveIcon"> Remove </a>
+                                         </div>
+                                        {% else %}
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px;"> </div>
+                                            <div>
+                                                <span class="btn red btn-outline btn-file">
+                                                    <span class="fileinput-new"> Select image </span>
+                                                    <span class="fileinput-exists"> Change </span>
+                                                    <input type="file" name="icon" id="icon"> </span>
+                                                <a href="javascript:;" class="btn red fileinput-exists" data-dismiss="fileinput"> Remove </a>
+                                            </div>
+                                            {% if (errors.has('icon')) %}<span class="help-block"> {{ errors.first('icon') }} </span>{% endif %}
+                                        </div>
+                                        <div class="clearfix margin-top-10">
+                                            <span class="label label-success">NOTE!</span> Please upload your Icon. Maximum 100 Kb. </div>
+                                        {% endif %}
+                                    </div>
+                              </div>
+                              <!-- END ICON -->
+
+                              <!-- PROJECT NAME -->
+                              <div class="form-group {% if (errors.has('project_name')) %}has-error{% endif %}">
+                                  <label class="control-label col-md-2">Project Name
+                                      <span class="required"> * </span>
+                                  </label>
+                                    <div class="col-md-6">
+                                        <div class="input-icon right">
+                                            <i class="fa fa-laptop"></i>
+                                            <input type="text" class="form-control" id="project_name" name="project_name" placeholder="Project Name" autocomplete="off" value="{{ Setting.project_name }}">
+                                            {% if (errors.has('project_name')) %}<span class="help-block"> {{ errors.first('project_name') }} </span>{% endif %}
+                                        </div>
+                                    </div>
+                              </div>
+                              <!-- END PROJECT NAME -->
+
+                              <!-- TITLE -->
+                              <div class="form-group {% if (errors.has('title')) %}has-error{% endif %}">
+                                  <label class="control-label col-md-2">Title
+                                      <span class="required"> * </span>
+                                  </label>
+                                    <div class="col-md-6">
+                                        <div class="input-icon right">
+                                            <i class="fa fa-laptop"></i>
+                                            <input type="text" class="form-control" id="title" name="title" placeholder="Title" autocomplete="off" value="{{ Setting.title }}">
+                                            {% if (errors.has('title')) %}<span class="help-block"> {{ errors.first('title') }} </span>{% endif %}
+                                        </div>
+                                    </div>
+                              </div>
+                              <!-- END TITLE -->
+
+                              <!-- KEYWORDS -->
+                              <div class="form-group {% if (errors.has('keywords')) %}has-error{% endif %}">
+                                  <label class="control-label col-md-2">Keywords
+                                      <span class="required"> * </span>
+                                  </label>
+                                    <div class="col-md-6">
+                                        <div class="input-icon right">
+                                            <i class="fa fa-key"></i>
+                                            <input type="text" class="form-control" id="keywords" name="keywords" placeholder="Keywords" autocomplete="off" value="{{ Setting.keywords }}">
+                                            {% if (errors.has('keywords')) %}<span class="help-block"> {{ errors.first('keywords') }} </span>{% endif %}
+                                        </div>
+                                    </div>
+                              </div>
+                              <!-- END KEYWORDS -->
+
+                              <!-- DESCRIPTION -->
+                              <div class="form-group {% if (errors.has('description')) %}has-error{% endif %}">
+                                      <label class="control-label col-md-2">Description
+                                          <span class="required"> * </span>
+                                      </label>
+                                  <div class="col-md-6">
+                                        <div class="input-icon right">
+                                            <i class="fa fa-info"></i>
+                                            <textarea class="form-control" id="description" name="description" rows="3">{{ Setting.description }}</textarea>
+                                            {% if (errors.has('description')) %}<span class="help-block"> {{ errors.first('description') }} </span>{% endif %}
+                                        </div>
+                                 </div>
+                              </div>
+                              <!-- END DESCRIPTION -->
+
+                              <h4><strong><i><span class="caption-subject font-red-sunglo bold uppercase">META TAG</span></i></strong></h4>
+                              <hr>
+
+                              <!-- META KEYWORDS -->
+                              <div class="form-group {% if (errors.has('meta_keywords')) %}has-error{% endif %}">
+                                  <label class="control-label col-md-2">Meta Keywords
+                                      <span class="required"> * </span>
+                                  </label>
+                                    <div class="col-md-6">
+                                        <div class="input-icon right">
+                                            <i class="fa fa-key"></i>
+                                            <input type="text" class="form-control" id="meta_keywords" name="meta_keywords" placeholder="meta_keywords" autocomplete="off" value="{{ Setting.meta_keywords }}">
+                                            {% if (errors.has('meta_keywords')) %}<span class="help-block"> {{ errors.first('meta_keywords') }} </span>{% endif %}
+                                        </div>
+                                    </div>
+                              </div>
+                              <!-- END META KEYWORDS -->
+
+                              <!-- META DESCRIPTION -->
+                              <div class="form-group {% if (errors.has('meta_description')) %}has-error{% endif %}">
+                                      <label class="control-label col-md-2">Meta Description
+                                          <span class="required"> * </span>
+                                      </label>
+                                  <div class="col-md-6">
+                                        <div class="input-icon right">
+                                            <i class="fa fa-info"></i>
+                                            <textarea class="form-control" id="meta_description" name="meta_description" rows="3">{{ Setting.meta_description }}</textarea>
+                                            {% if (errors.has('meta_description')) %}<span class="help-block"> {{ errors.first('meta_description') }} </span>{% endif %}
+                                        </div>
+                                 </div>
+                              </div>
+                              <!-- END META DESCRIPTION -->
+
+                              <h4><strong><i><span class="caption-subject font-red-sunglo bold uppercase">VISI & MISI</span></i></strong></h4>
+                              <hr>
+
+                              <!-- VISI -->
+                              <div class="form-group {% if (errors.has('visi')) %}has-error{% endif %}">
+                                      <label class="control-label col-md-2">Visi
+                                      </label>
+                                  <div class="col-md-8">
+                                        <div class="input-icon right">
+                                            <textarea class="form-control wysihtml5" id="visi" name="visi" rows="10">{{ Setting.visi }}</textarea>
+                                            {% if (errors.has('visi')) %}<span class="help-block"> {{ errors.first('visi') }} </span>{% endif %}
+                                        </div>
+                                 </div>
+                              </div>
+                              <!-- END VISI -->
+
+                              <!-- MISI -->
+                              <div class="form-group {% if (errors.has('misi')) %}has-error{% endif %}">
+                                      <label class="control-label col-md-2">Misi
+                                      </label>
+                                  <div class="col-md-8">
+                                        <div class="input-icon right">
+                                            <textarea class="form-control wysihtml5" id="misi" name="misi" rows="10">{{ Setting.misi }}</textarea>
+                                            {% if (errors.has('misi')) %}<span class="help-block"> {{ errors.first('misi') }} </span>{% endif %}
+                                        </div>
+                                 </div>
+                              </div>
+                              <!-- END MISI -->
+
+                              <h4><strong><i><span class="caption-subject font-red-sunglo bold uppercase">Contact Information</span></i></strong></h4>
+                              <hr>
+
+                              <!-- PHONE -->
+                              <div class="form-group {% if (errors.has('phone')) %}has-error{% endif %}">
+                                  <label class="control-label col-md-2">Phone
+                                  </label>
+                                    <div class="col-md-6">
+                                        <div class="input-icon right">
+                                            <i class="fa fa-phone"></i>
+                                            <input type="text" class="form-control" id="phone" name="phone" placeholder="phone" autocomplete="off" value="{{ Setting.phone }}">
+                                            {% if (errors.has('phone')) %}<span class="help-block"> {{ errors.first('phone') }} </span>{% endif %}
+                                        </div>
+                                    </div>
+                              </div>
+                              <!-- END PHONE -->
+
+                              <!-- MOBILE -->
+                              <div class="form-group {% if (errors.has('mobile')) %}has-error{% endif %}">
+                                  <label class="control-label col-md-2">Handphone
+                                  </label>
+                                    <div class="col-md-6">
+                                        <div class="input-icon right">
+                                            <i class="fa fa-mobile"></i>
+                                            <input type="text" class="form-control" id="mobile" name="mobile" placeholder="mobile" autocomplete="off" value="{{ Setting.mobile }}">
+                                            {% if (errors.has('mobile')) %}<span class="help-block"> {{ errors.first('mobile') }} </span>{% endif %}
+                                        </div>
+                                    </div>
+                              </div>
+                              <!-- END MOBILE -->
+
+                              <!-- WHATSAPP -->
+                              <div class="form-group {% if (errors.has('whatsapp')) %}has-error{% endif %}">
+                                  <label class="control-label col-md-2">Whatsapp
+                                  </label>
+                                    <div class="col-md-6">
+                                        <div class="input-icon right">
+                                            <i class="fa fa-whatsapp"></i>
+                                            <input type="text" class="form-control" id="whatsapp" name="whatsapp" placeholder="whatsapp" autocomplete="off" value="{{ Setting.whatsapp }}">
+                                            {% if (errors.has('whatsapp')) %}<span class="help-block"> {{ errors.first('whatsapp') }} </span>{% endif %}
+                                        </div>
+                                    </div>
+                              </div>
+                              <!-- END WHATSAPP -->
+
+                              <!-- EMAIL -->
+                              <div class="form-group {% if (errors.has('email')) %}has-error{% endif %}">
+                                  <label class="control-label col-md-2">Email
+                                      <span class="required"> * </span>
+                                  </label>
+                                    <div class="col-md-6">
+                                        <div class="input-icon right">
+                                            <i class="fa fa-envelope"></i>
+                                            <input type="text" class="form-control" id="email" name="email" placeholder="email" autocomplete="off" value="{{ Setting.email }}">
+                                            {% if (errors.has('email')) %}<span class="help-block"> {{ errors.first('email') }} </span>{% endif %}
+                                        </div>
+                                    </div>
+                              </div>
+                              <!-- END EMAIL -->
+
+                              <!-- ADDRESS -->
+                              <div class="form-group {% if (errors.has('address')) %}has-error{% endif %}">
+                                      <label class="control-label col-md-2">Address
+                                          <span class="required"> * </span>
+                                      </label>
+                                  <div class="col-md-8">
+                                        <div class="input-icon right">
+                                            <textarea class="form-control wysihtml5" id="address" name="address" rows="10">{{ Setting.address }}</textarea>
+                                            {% if (errors.has('address')) %}<span class="help-block"> {{ errors.first('address') }} </span>{% endif %}
+                                        </div>
+                                 </div>
+                              </div>
+                              <!-- END ADDRESS -->
+
+                              <!-- LOCATION -->
+                              <div id="locationField" class="form-group {% if (errors.has('location')) %}has-error{% endif %}">
+                                  <label class="control-label col-md-2">Location
+                                      <span class="required"> * </span>
+                                  </label>
+                                    <div class="col-md-6">
+                                        <div class="input-icon right">
+                                            <i class="fa fa-map-marker"></i>
+                                            <input type="text" class="form-control" id="autocomplete" onFocus="geolocate()" name="location" placeholder="Location" autocomplete="off" value="{{ Setting.location }}" onkeypress="">
+                                            <input type="hidden" id="long" name="longitude" value="{{ Setting.longitude }}" />
+                                            <input type="hidden" id="lat" name="latitude" value="{{ Setting.latitude }}" />
+                                            {% if (errors.has('location')) %}<span class="help-block"> {{ errors.first('location') }} </span>{% endif %}
+                                        </div>
+                                    </div>
+                              </div>
+                              <div id="maps" class="form-group">
+                                  <label class="control-label col-md-2"></label>
+                                  <div class="col-md-4">
+                                      <div id="mapholder"></div>
+                                  </div>
+                              </div>
+                              <!-- END LOCATION -->
+
+                              <h4><strong><i><span class="caption-subject font-red-sunglo bold uppercase">Social Media Link</span></i></strong></h4>
+                              <hr>
+
+                              <!-- FACEBOOK -->
+                              <div class="form-group {% if (errors.has('facebook')) %}has-error{% endif %}">
+                                  <label class="control-label col-md-2">Facebook
+                                  </label>
+                                    <div class="col-md-6">
+                                        <div class="input-icon right">
+                                            <i class="fa fa-facebook"></i>
+                                            <input type="text" class="form-control" id="facebook" name="facebook" placeholder="facebook" autocomplete="off" value="{{ Setting.facebook }}">
+                                            {% if (errors.has('facebook')) %}<span class="help-block"> {{ errors.first('facebook') }} </span>{% endif %}
+                                        </div>
+                                    </div>
+                              </div>
+                              <!-- END FACEBOOK -->
+
+                              <!-- TWITTER -->
+                              <div class="form-group {% if (errors.has('twitter')) %}has-error{% endif %}">
+                                  <label class="control-label col-md-2">Twitter
+                                  </label>
+                                    <div class="col-md-6">
+                                        <div class="input-icon right">
+                                            <i class="fa fa-twitter"></i>
+                                            <input type="text" class="form-control" id="twitter" name="twitter" placeholder="twitter" autocomplete="off" value="{{ Setting.twitter }}">
+                                            {% if (errors.has('twitter')) %}<span class="help-block"> {{ errors.first('twitter') }} </span>{% endif %}
+                                        </div>
+                                    </div>
+                              </div>
+                              <!-- END TWITTER -->
+
+
+                              <!-- INSTAGRAM -->
+                              <div class="form-group {% if (errors.has('instagram')) %}has-error{% endif %}">
+                                  <label class="control-label col-md-2">Instagram
+                                  </label>
+                                    <div class="col-md-6">
+                                        <div class="input-icon right">
+                                            <i class="fa fa-instagram"></i>
+                                            <input type="text" class="form-control" id="instagram" name="instagram" placeholder="instagram" autocomplete="off" value="{{ Setting.instagram }}">
+                                            {% if (errors.has('instagram')) %}<span class="help-block"> {{ errors.first('instagram') }} </span>{% endif %}
+                                        </div>
+                                    </div>
+                              </div>
+                              <!-- END INSTAGRAM -->
+
+
+                              <!-- GOOGLE PLUS -->
+                              <div class="form-group {% if (errors.has('googleplus')) %}has-error{% endif %}">
+                                  <label class="control-label col-md-2">Google Plus
+                                  </label>
+                                    <div class="col-md-6">
+                                        <div class="input-icon right">
+                                            <i class="fa fa-google-plus"></i>
+                                            <input type="text" class="form-control" id="googleplus" name="googleplus" placeholder="googleplus" autocomplete="off" value="{{ Setting.googleplus }}">
+                                            {% if (errors.has('googleplus')) %}<span class="help-block"> {{ errors.first('googleplus') }} </span>{% endif %}
+                                        </div>
+                                    </div>
+                              </div>
+                              <!-- END GOOGLE PLUS -->
+
+                              <!-- LINKEDIN -->
+                              <div class="form-group {% if (errors.has('linkedin')) %}has-error{% endif %}">
+                                  <label class="control-label col-md-2">Linkedin
+                                  </label>
+                                  <div class="col-md-6">
+                                      <div class="input-icon right">
+                                          <i class="fa fa-linkedin"></i>
+                                          <input type="text" class="form-control" id="linkedin" name="linkedin" placeholder="linkedin" autocomplete="off" value="{{ Setting.linkedin }}">
+                                          {% if (errors.has('linkedin')) %}<span class="help-block"> {{ errors.first('linkedin') }} </span>{% endif %}
+                                      </div>
+                                  </div>
+                              </div>
+                              <!-- END LINKEDIN -->
+
+                              <h4><strong><i><span class="caption-subject font-red-sunglo bold uppercase">Analytic</span></i></strong></h4>
+                              <hr>
+
+                              <!-- GOOGLE ANALYTIC -->
+                              <div class="form-group {% if (errors.has('google_analytic')) %}has-error{% endif %}">
+                                      <label class="control-label col-md-2">Google Analytic
+                                      </label>
+                                  <div class="col-md-6">
+                                        <div class="input-icon right">
+                                            <i class="fa fa-google"></i>
+                                            <textarea class="form-control" id="google_analytic" name="google_analytic" rows="15">{{ Setting.google_analytic }}</textarea>
+                                            {% if (errors.has('google_analytic')) %}<span class="help-block"> {{ errors.first('google_analytic') }} </span>{% endif %}
+                                        </div>
+                                 </div>
+                              </div>
+                              <!-- END GOOGLE ANALYTIC -->
+                          </div>
+                          <div class="form-actions">
+                              <div class="row">
+                                  <div class="col-md-offset-2 col-md-9">
+                                      <input type="hidden" class="form-control" id="id" name="id" value="{{ id }}" />
+                                    <button type="submit" class="btn btn-success">Save</button>
+                                  </div>
+                              </div>
+                          </div>
+                      </form>
+                      <!-- END FORM-->
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block addmodal %}
+<!-- CONFIRM REMOVE LOGO -->
+<div class="modal fade bs-modal-sm" id="ConfirmRemove" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-danger">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Remove Logo Confirmation!</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure??
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="btn-RemoveLogoNow">Remove</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- CONFIRM REMOVE LOGO -->
+
+<!-- CONFIRM REMOVE ICON -->
+<div class="modal fade bs-modal-sm" id="ConfirmRemoveIcon" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Remove Icon Confirmation!</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure??
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal" id="btn-RemoveIconNow">Remove</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- CONFIRM REMOVE ICON -->
+{% endblock %}
+
+
+{% block addjs %}
+<!-- DROPDOWN -->
+{{ asset('plugins/select2/js/select2.full.min.js') | script_tag }}
+<!-- JS SELECT2 -->
+{{ asset('js/select2/select2.js') | script_tag }}
+
+<!-- DATEPICKER -->
+{{ asset('plugins/moment.min.js') | script_tag }}
+{{ asset('plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') | script_tag }}
+{{ asset('plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') | script_tag }}
+
+<!-- JS DATEPICKER -->
+{{ asset('js/datetimepicker/datetime_picker.js') | script_tag }}
+
+
+<!-- JS INPUT CKEDITOR -->
+{{ asset('plugins/ckeditor/ckeditor.js') | script_tag }}
+<script>
+ CKEDITOR.replace( 'visi' );
+ CKEDITOR.replace( 'misi' );
+ CKEDITOR.replace( 'address' );
+</script>
+
+<!-- FILE INPUT -->
+{{ asset('plugins/bootstrap-fileinput/bootstrap-fileinput.js') | script_tag }}
+
+
+<!-- VALIDATION -->
+{{ asset('plugins/jquery-validation/js/jquery.validate.min.js')|script_tag }}
+{{ asset('plugins/jquery-validation/js/additional-methods.min.js')|script_tag }}
+{{ asset('modules/setting/validate.js') | script_tag }}
+
+<!-- GOOGLE API -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXbF7yovHRlepsES0k8bXLYQTgMehhJmA&libraries=places&callback=initAutocomplete" async defer></script>
+
+
+
+{{ asset('modules/setting/main.js') | script_tag }}
+
+
+
+{% endblock %}

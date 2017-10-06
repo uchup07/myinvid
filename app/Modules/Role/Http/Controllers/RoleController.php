@@ -137,7 +137,7 @@ class RoleController extends Controller
                         );
 
                         if(PermissionRole::where($WhereCheck)->count() == 0){
-                            $Role->attachPermission($Access);
+                            $Role->attachPermission($int_PermissionID);
                         }
 
                     }
