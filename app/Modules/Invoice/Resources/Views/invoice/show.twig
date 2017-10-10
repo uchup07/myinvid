@@ -178,122 +178,6 @@
 {% endblock %}
 
 {% block addmodal %}
-    <div id="ModalConfirm" class="modal fade" tabindex="-1" data-width="760">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-            <h4 class="modal-title">Tambah Momen Kesayanganmu</h4>
-        </div>
-        <div class="modal-body">
-            <!-- BEGIN FORM-->
-            <form name="form_storyoflove" id="form_storyoflove" class="form-horizontal" method="post" enctype="multipart/form-data">
-                {{ csrf_field() }}
-                <div class="form-body">
-                    <!-- PARAM -->
-                    <input type="hidden" name="website_id" id="website_id" value="{{ WebsiteID }}">
-                    <input type="hidden" name="storyoflove_id" id="storyoflove_id">
-                    <input type="hidden" name="statusform" id="statusform">
-                    <!-- PARAM -->
-
-                    <!-- TITLE -->
-                    <div class="form-group" id="row-title">
-                        <label class="control-label col-md-3">Judul
-                            <span class="required"> * </span>
-                        </label>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control maxlength" maxlength="255" id="title" name="title" placeholder="Masukan Judul Momen terbaik bersamanya" autocomplete="off" value="">
-                        </div>
-                    </div>
-                    <!-- END TITLE -->
-
-                    <!-- DESKRIPSI -->
-                    <div class="form-group" id="row-description">
-                        <label class="control-label col-md-3">Deskripsi
-                            <span class="required"> * </span>
-                        </label>
-                        <div class="col-md-8">
-                            <textarea type="text" class="form-control"  id="description" name="description" placeholder="Ceritakan tentang Momen tersebut" autocomplete="off" value=""></textarea>
-                        </div>
-                    </div>
-                    <!-- END DESKRIPSI -->
-
-
-                    <!-- TANGGAL -->
-                    <div class="form-group" id="row-date_story">
-                        <label class="control-label col-md-3">Tanggal Moment
-                            <span class="required"> * </span>
-                        </label>
-                        <div class="col-md-3">
-                            <div class="input-icon right">
-                                <i class="fa fa-calendar"></i>
-                                <input type="text" class="form-control date-picker" id="date_story" name="date_story" data-date-format="dd-mm-yyyy" readonly placeholder="dd-mm-yyyy" autocomplete="off" value="">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END TANGGAL -->
-
-                    <!-- FOTO -->
-                    <div class="form-group">
-                        <label class="control-label col-md-3">Foto
-                        </label>
-                        <div class="col-md-6">
-                            <div id="imageNew">
-                                <div class="fileinput fileinput-new" data-provides="fileinput">
-                                    <div class="input-group input-large">
-                                        <div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
-                                            <i class="fa fa-file fileinput-exists"></i>&nbsp;
-                                            <span class="fileinput-filename"> </span>
-                                        </div>
-                                        <span class="input-group-addon btn default btn-file">
-                                    <span class="fileinput-new"> Pilih Foto </span>
-                                    <span class="fileinput-exists"> Ubah </span>
-                                        <input type="file"  id="imageFile" name="imageFile"> </span>
-                                        <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Hapus </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="imageEdit" style="display: none;">
-                                <div class="input-group">
-                                    <input class="form-control" type="text" id="imageFileEdit" name="imageFileEdit" readonly>
-                                    <span class="input-group-btn">
-                                        <button class="btn red" type="button" id="btn-DeleteImageEdit">Hapus</button>
-                                    </span>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END FOTO -->
-
-
-                    <!-- URL YOUTUBE -->
-                    <div class="form-group">
-                        <label class="control-label col-md-3">Url Youtube
-                        </label>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control" id="video" name="video" placeholder="Masukan Url Youtube (Bila ada)" autocomplete="off" value="">
-                        </div>
-                    </div>
-                    <hr>
-                    <!-- END URL YOUTUBE -->
-
-
-
-
-
-                    <div class="form-actions">
-                        <div class="row">
-                            <div class="col-md-offset-3 col-md-9">
-                                <button type="submit" class="btn btn-success btn-circle" name="btn" value="Save"><i class="fa fa-save"></i> Simpan</button>
-                                <button type="button" class="btn btn-warning btn-circle" name="btn" value="Reset" id="btn-ResetFormStory"><i class="fa fa-refresh"></i> Reset</button>
-                                <button type="button" class="btn btn-default btn-circle" name="btn" value="Tutup" data-dismiss="modal" aria-hidden="true"><i class="fa fa-remove"></i> Tutup</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
 {% endblock %}
 
 {% block addjs %}
@@ -313,7 +197,7 @@
     {{ asset('js/select2/select2.js') | script_tag }}
 
     <!-- JS -->
-    {{ asset('modules/invoice/main.js') | script_tag }}
+    {{ asset('modules/template/main.js') | script_tag }}
 
 
 

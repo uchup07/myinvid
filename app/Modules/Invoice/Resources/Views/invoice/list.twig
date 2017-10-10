@@ -131,114 +131,115 @@
 {% endblock %}
 
 {% block addmodal %}
-    <div id="ModalAddStory" class="modal fade" tabindex="-1" data-width="760">
+
+    <div id="ModalConfirm" class="modal fade" tabindex="-1" data-width="760">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-            <h4 class="modal-title">Tambah Momen Kesayanganmu</h4>
+            <h4 class="modal-title font-red bold">Konfirmasi Pembayaran!</h4>
         </div>
         <div class="modal-body">
             <!-- BEGIN FORM-->
-            <form name="form_storyoflove" id="form_storyoflove" class="form-horizontal" method="post" enctype="multipart/form-data">
+            <form name="form_confirmation" id="form_confirmation" class="form-horizontal" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="form-body">
                     <!-- PARAM -->
-                    <input type="hidden" name="website_id" id="website_id" value="{{ WebsiteID }}">
-                    <input type="hidden" name="storyoflove_id" id="storyoflove_id">
-                    <input type="hidden" name="statusform" id="statusform">
+                    <input type="hidden" name="invoice_id" id="invoice_id">
                     <!-- PARAM -->
 
-                    <!-- TITLE -->
-                    <div class="form-group" id="row-title">
-                        <label class="control-label col-md-3">Judul
+                    <!-- BANK INFORMATION -->
+                    <div class="form-group" id="row-bank_information">
+                        <label class="control-label col-md-3">Bank Information
                             <span class="required"> * </span>
                         </label>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control maxlength" maxlength="255" id="title" name="title" placeholder="Masukan Judul Momen terbaik bersamanya" autocomplete="off" value="">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control maxlength input-circle-left" maxlength="150" id="bank_information" name="bank_information" placeholder="Contoh : BCA" autocomplete="off" value="">
+                                <span class="input-group-addon input-circle-right"><i class="fa fa-bank"></i> </span>
+                            </div>
                         </div>
                     </div>
-                    <!-- END TITLE -->
+                    <!-- END BANK INFORMATION  -->
 
-                    <!-- DESKRIPSI -->
-                    <div class="form-group" id="row-description">
-                        <label class="control-label col-md-3">Deskripsi
+                    <!-- NAME -->
+                    <div class="form-group" id="row-name">
+                        <label class="control-label col-md-3">Nama
                             <span class="required"> * </span>
                         </label>
-                        <div class="col-md-8">
-                            <textarea type="text" class="form-control"  id="description" name="description" placeholder="Ceritakan tentang Momen tersebut" autocomplete="off" value=""></textarea>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control maxlength input-circle-left" maxlength="150" id="name" name="name" placeholder="Contoh : Barindra" autocomplete="off" value="">
+                                <span class="input-group-addon input-circle-right"><i class="fa fa-user"></i> </span>
+                            </div>
                         </div>
                     </div>
-                    <!-- END DESKRIPSI -->
+                    <!-- END NAME  -->
 
+                    <!-- ACCOUNT OF BANK -->
+                    <div class="form-group" id="row-account_of_bank">
+                        <label class="control-label col-md-3">No. Rekening
+                            <span class="required"> * </span>
+                        </label>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control maxlength input-circle-left" maxlength="25" id="account_of_bank" name="account_of_bank" placeholder="Contoh : 7380317421" autocomplete="off" value="">
+                                <span class="input-group-addon input-circle-right"> <i class="fa fa-info"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END ACCOUNT OF BANK  -->
 
                     <!-- TANGGAL -->
-                    <div class="form-group" id="row-date_story">
-                        <label class="control-label col-md-3">Tanggal Moment
+                    <div class="form-group" id="row-date_transaction">
+                        <label class="control-label col-md-3">Tanggal Bayar
                             <span class="required"> * </span>
                         </label>
                         <div class="col-md-3">
-                            <div class="input-icon right">
-                                <i class="fa fa-calendar"></i>
-                                <input type="text" class="form-control date-picker" id="date_story" name="date_story" data-date-format="dd-mm-yyyy" readonly placeholder="dd-mm-yyyy" autocomplete="off" value="">
+                            <div class="input-group">
+                                <input type="text" class="form-control date-picker input-circle-left" id="date_transaction" name="date_transaction" data-date-format="dd-mm-yyyy" readonly placeholder="dd-mm-yyyy" autocomplete="off" value="{{ DateNow }}">
+                                <span class="input-group-addon input-circle-right"><i class="fa fa-calendar"></i> </span>
                             </div>
                         </div>
                     </div>
                     <!-- END TANGGAL -->
 
-                    <!-- FOTO -->
+                    <!-- TAGIHAN -->
                     <div class="form-group">
-                        <label class="control-label col-md-3">Foto
+                        <label class="control-label col-md-3">Tagihan
                         </label>
-                        <div class="col-md-6">
-                            <div id="imageNew">
-                                <div class="fileinput fileinput-new" data-provides="fileinput">
-                                    <div class="input-group input-large">
-                                        <div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
-                                            <i class="fa fa-file fileinput-exists"></i>&nbsp;
-                                            <span class="fileinput-filename"> </span>
-                                        </div>
-                                        <span class="input-group-addon btn default btn-file">
-                                    <span class="fileinput-new"> Pilih Foto </span>
-                                    <span class="fileinput-exists"> Ubah </span>
-                                        <input type="file"  id="imageFile" name="imageFile"> </span>
-                                        <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Hapus </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="imageEdit" style="display: none;">
-                                <div class="input-group">
-                                    <input class="form-control" type="text" id="imageFileEdit" name="imageFileEdit" readonly>
-                                    <span class="input-group-btn">
-                                        <button class="btn red" type="button" id="btn-DeleteImageEdit">Hapus</button>
-                                    </span>
-                                </div>
-
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-addon input-circle-left">Rp</span>
+                                <input type="text" class="form-control" id="total_tagihan" name="total_tagihan" readonly>
+                                <span class="input-group-addon input-circle-right">,- </span>
                             </div>
                         </div>
                     </div>
-                    <!-- END FOTO -->
+                    <!-- END TAGIHAN -->
 
-
-                    <!-- URL YOUTUBE -->
-                    <div class="form-group">
-                        <label class="control-label col-md-3">Url Youtube
+                    <!-- TOTAL -->
+                    <div class="form-group" id="row-total">
+                        <label class="control-label col-md-3">Total
+                            <span class="required"> * </span>
                         </label>
-                        <div class="col-md-8">
-                            <input type="text" class="form-control" id="video" name="video" placeholder="Masukan Url Youtube (Bila ada)" autocomplete="off" value="">
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-addon input-circle-left">
+                                    Rp
+                                </span>
+                                <input type="text" class="form-control rupiah" id="total" name="total" placeholder="0" autocomplete="off" value="">
+                                <span class="input-group-addon input-circle-right">,- </span>
+                            </div>
                         </div>
                     </div>
                     <hr>
-                    <!-- END URL YOUTUBE -->
-
-
-
-
+                    <!-- END TOTAL -->
 
                     <div class="form-actions">
                         <div class="row">
                             <div class="col-md-offset-3 col-md-9">
-                                    <button type="submit" class="btn btn-success btn-circle" name="btn" value="Save"><i class="fa fa-save"></i> Simpan</button>
-                                    <button type="button" class="btn btn-warning btn-circle" name="btn" value="Reset" id="btn-ResetFormStory"><i class="fa fa-refresh"></i> Reset</button>
-                                    <button type="button" class="btn btn-default btn-circle" name="btn" value="Tutup" data-dismiss="modal" aria-hidden="true"><i class="fa fa-remove"></i> Tutup</button>
+                                <button type="submit" class="btn btn-danger btn-circle" name="btn" value="Save"><i class="fa fa-mail-forward"></i> CONFIRM</button>
+                                <button type="button" class="btn btn-warning btn-circle" name="btn" value="Reset" id="btn-ResetFormConfirm"><i class="fa fa-refresh"></i> Reset</button>
+                                <button type="button" class="btn btn-default btn-circle" name="btn" value="Tutup" data-dismiss="modal" aria-hidden="true"><i class="fa fa-remove"></i> Tutup</button>
                             </div>
                         </div>
                     </div>
@@ -246,47 +247,6 @@
             </form>
         </div>
     </div>
-
-
-    <!-- Delete -->
-    <div class="modal fade" id="ConfirmDelete" tabindex="-1">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <h4 class="modal-title">Konfirmasi Hapus!</h4>
-                </div>
-                <div class="modal-body">
-                    Apakah kamu yakin??
-                    <input type="hidden" name="id" id="id">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">Tutup</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="ActionDelete()">Hapus</button>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-    </div>
-    <!-- Delete -->
-
-    <!-- Delete Image -->
-    <div class="modal fade" id="ConfirmDeleteImage" tabindex="-1">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                <h4 class="modal-title">Konfirmasi Hapus!</h4>
-            </div>
-            <div class="modal-body">
-                Apakah kamu yakin??
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-danger" id="btn-ActionDeleteImage">Hapus</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- Delete Image -->
-
 
 {% endblock %}
 
@@ -300,25 +260,22 @@
     {{ asset('plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') | script_tag }}
     {{ asset('js/datetimepicker/datetime_picker.js') | script_tag }}
 
-
     <!-- MODAL -->
     {{ asset('plugins/bootstrap-modal/js/bootstrap-modalmanager.js') | script_tag }}
     {{ asset('plugins/bootstrap-modal/js/bootstrap-modal.js') | script_tag }}
     {{ theme_asset('admin::js/script/ui-extended-modals.min.js') | script_tag }}
 
-
-    <!-- FILE INPUT -->
-    {{ asset('plugins/bootstrap-fileinput/bootstrap-fileinput.js') | script_tag }}
+    <!-- JS INPUT-MASK -->
+    {{ asset('plugins/jquery-inputmask/jquery.inputmask.bundle.min.js')|script_tag }}
+    {{ asset('js/input-mask/input-mask.js')|script_tag }}
 
     <!-- NOTIFICATION -->
     {{ asset('plugins/bootstrap-toastr/toastr.min.js')|  script_tag }}
 
     <script>
         var ROUTE_DATATABLE = '{{ route('invoice_datatables', WebsiteID) }}';
-
-
-
     </script>
+
     {{ asset('modules/invoice/datatable.js')|script_tag }}
     {{ asset('modules/invoice/main.js')|script_tag }}
 {% endblock %}
