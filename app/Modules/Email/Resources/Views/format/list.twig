@@ -1,0 +1,242 @@
+{% extends "admin::layouts.layout" %}
+
+{% block addcss %}
+    <!-- DATATABLE -->
+    {{ asset('plugins/datatables/datatables.min.css')|css_tag }}
+    {{ asset('plugins/datatables/plugins/bootstrap/datatables.bootstrap.css')|css_tag }}
+
+    <!-- MODAL -->
+    {{ asset('plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css')|css_tag }}
+    {{ asset('plugins/bootstrap-modal/css/bootstrap-modal.css')|css_tag }}
+
+    <!-- FILE INPUT -->
+    {{ asset('plugins/bootstrap-fileinput/bootstrap-fileinput.css') | css_tag }}
+
+    <!-- NOTIFICATION -->
+    {{ asset('plugins/bootstrap-toastr/toastr.min.css') | css_tag }}
+
+    <!-- DATEPICKER  -->
+    {{ asset('plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css')|css_tag }}
+
+{% endblock %}
+
+
+{% block pageheader %}
+    <!-- BEGIN PAGE HEAD-->
+    <div class="page-head">
+        <div class="container">
+            <!-- BEGIN PAGE TITLE -->
+            <div class="page-title">
+                <h1>{{ string_menuname }}
+                    <small>List {{ string_menuname }}</small>
+                </h1>
+            </div>
+            <!-- END PAGE TITLE -->
+        </div>
+    </div>
+    <!-- END PAGE HEAD-->
+
+{% endblock %}
+
+
+{% block breadcrumbs %}
+    <!-- BEGIN PAGE BREADCRUMBS -->
+    <ul class="page-breadcrumb breadcrumb">
+        <li>
+            <a href="{{ url('/home') }}">Home</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a href="javascript:void(0)">Undangan Email</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <span>{{ string_menuname }}</span>
+        </li>
+    </ul>
+    <!-- END PAGE BREADCRUMBS -->
+{% endblock %}
+
+
+{% block body %}
+    {% if ScsMsg %}
+        <div class="alert alert-success">
+            <button class="close" data-close="alert"></button>
+            <span>{{ ScsMsg }}</span>
+        </div>
+    {% endif %}
+
+    {% if (session('ScsMsg')) %}
+        <div class="alert alert-success">
+            <button class="close" data-close="alert"></button>
+            <span>{{ session('ScsMsg') }}</span>
+        </div>
+    {% endif %}
+
+    {% if (session('ErrMsg')) %}
+        <div class="alert alert-danger">
+            <button class="close" data-close="alert"></button>
+            <span>{{ session('ErrMsg') }}</span>
+        </div>
+    {% endif %}
+
+    {% if (session('WrngMsg')) %}
+        <div class="alert alert-warning">
+            <button class="close" data-close="alert"></button>
+            <span>{{ session('WrngMsg') }}</span>
+        </div>
+    {% endif %}
+
+    {% if (session('InfoMsg')) %}
+        <div class="alert alert-info">
+            <button class="close" data-close="alert"></button>
+            <span>{{ session('InfoMsg') }}</span>
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-history font-yellow-casablanca"></i>
+                        <span class="caption-subject bold font-yellow-casablanca uppercase"> {{ string_active_menu }} </span>
+                        <span class="caption-helper">Silakan isi Format Undangan sesuai website kamu</span>
+                    </div>
+                </div>
+                <div class="portlet-body">
+
+                    <table class="table table-hover table-light" id="tbl_email_format">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Website</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <!--tbody section is required-->
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- END EXAMPLE TABLE PORTLET-->
+        </div>
+    </div>
+{% endblock %}
+
+{% block addmodal %}
+
+    <div id="ModalSet" class="modal fade" tabindex="-1" data-width="760">
+        <div class="modal-body">
+            <!-- BEGIN FORM-->
+            <form name="form_email_format" id="form_email_format" class="form-horizontal"  method="post" enctype="multipart/form-data">
+                {{ csrf_field() }}
+                <div class="form-body">
+                    <!-- PARAM -->
+                    <input type="hidden" name="email_format_id" id="email_format_id">
+                    <input type="hidden" name="website_id" id="website_id">
+                    <!-- PARAM -->
+
+                    <h4 class="caption-subject font-blue bold uppercase">Format Undangan Email</h4>
+                    <hr>
+
+                    <!-- TITLE -->
+                    <div class="form-group form-md-line-input has-success">
+                        <label class="col-md-3 control-label" for="form_control_1">Judul</label>
+                        <div class="col-md-9">
+                            <input class="form-control" id="title" name="title" placeholder="Judul" type="text">
+                            <div class="form-control-focus"> </div>
+                        </div>
+                    </div>
+                    <!-- TITLE -->
+
+                    <!-- CONTENT -->
+                    <div class="form-group form-md-line-input has-success">
+                        <label class="col-md-3 control-label" for="form_control_1">Konten</label>
+                        <div class="col-md-9">
+                            <textarea class="form-control" name="content" id="content" cols="6"></textarea>
+                            <div class="form-control-focus"> </div>
+                        </div>
+                    </div>
+                    <!-- CONTENT -->
+
+                    <!-- ATTACHMENT -->
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Attachment
+                        </label>
+                        <div class="col-md-6">
+                            <div id="fileNew">
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <div class="input-group input-large">
+                                        <div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
+                                            <i class="fa fa-file fileinput-exists"></i>&nbsp;
+                                            <span class="fileinput-filename"> </span>
+                                        </div>
+                                        <span class="input-group-addon btn default btn-file">
+                                    <span class="fileinput-new"> Pilih File </span>
+                                    <span class="fileinput-exists"> Ubah </span>
+                                        <input type="file"  id="imageFile" name="imageFile"> </span>
+                                        <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Hapus </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="fileEdit" style="display: none;">
+                                <div class="input-group">
+                                    <input class="form-control" type="text" id="imageFileEdit" name="imageFileEdit" readonly>
+                                    <span class="input-group-btn">
+                                        <button class="btn red" type="button" id="btn-DeleteFileEdit">Hapus</button>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END ATTACHMENT -->
+
+
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button type="button" class="btn btn-success btn-circle" name="btn" value="Simpan" id="btn-SaveEmailFormat"><i class="fa fa-save"></i> SIMPAN</button>
+                                <button type="button" class="btn btn-default btn-circle" name="btn" value="Tutup" data-dismiss="modal" aria-hidden="true"><i class="fa fa-remove"></i> Tutup</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block addjs %}
+    <!-- DATATABLE -->
+    {{ asset('plugins/datatables/datatables.min.js') | script_tag }}
+    {{ asset('plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') | script_tag }}
+
+    <!-- DATEPICKER -->
+    {{ asset('plugins/moment.min.js') | script_tag }}
+    {{ asset('plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') | script_tag }}
+    {{ asset('js/datetimepicker/datetime_picker.js') | script_tag }}
+
+    <!-- MODAL -->
+    {{ asset('plugins/bootstrap-modal/js/bootstrap-modalmanager.js') | script_tag }}
+    {{ asset('plugins/bootstrap-modal/js/bootstrap-modal.js') | script_tag }}
+    {{ theme_asset('admin::js/script/ui-extended-modals.min.js') | script_tag }}
+
+    <!-- NOTIFICATION -->
+    {{ asset('plugins/bootstrap-toastr/toastr.min.js')|  script_tag }}
+
+    <!-- FILE INPUT -->
+    {{ asset('plugins/bootstrap-fileinput/bootstrap-fileinput.js') | script_tag }}
+
+
+    <script>
+        var ROUTE_DATATABLE = '{{ route('email_format_datatables', WebsiteID) }}';
+    </script>
+
+    {{ asset('modules/email/format/datatable.js')|script_tag }}
+    {{ asset('modules/email/format/main.js')|script_tag }}
+{% endblock %}

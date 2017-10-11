@@ -23,4 +23,8 @@ class Website extends Model
         return $this->hasMany('App\Modules\Bridesmaid\Models\Bridesmaid', 'website_id', 'id');
     }
 
+    public function website() {
+        return $this->hasOne('App\Modules\Email\Models\EmailFormat', 'id', 'website_id');
+    }
+
 }

@@ -763,5 +763,32 @@ if (! function_exists('CreateInvoice')) {
 }
 
 
+if (! function_exists('set_SaldoAccount')) {
+    /**
+     * @param $Param['id'] | $Param['total'] | $Param['flow']
+     * @return boolean
+     */
+    function set_SaldoAccount($Param)
+    {
+        $Account                        = \App\Modules\Account\Models\Account::find($Param['id']);
+        $TotalOld                       = $Account->saldo_realtime;
+        if($Param['flow'] == 'IN'){
+            $NewTotal                   = $TotalOld + $Param['total'];
+            $Realtime                   = date('Y-m-d H:i:s');
+        }else{
+            $NewTotal                   = $TotalOld - $Param['total'];
+            $Realtime                   = date('Y-m-d H:i:s');
+        }
+        $Account->saldo_realtime        = $NewTotal;
+        $Account->saldo_realtime_date   = $Realtime;
+        if($Account->save()){
+            return true;
+        }else{
+            return;
+        }
+    }
+}
+
+
 
 ?>

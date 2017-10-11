@@ -11,11 +11,40 @@
  Target Server Version : 50635
  File Encoding         : utf-8
 
- Date: 10/04/2017 16:38:25 PM
+ Date: 10/11/2017 14:44:22 PM
 */
 
 SET NAMES utf8;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+--  Table structure for `accounts`
+-- ----------------------------
+DROP TABLE IF EXISTS `accounts`;
+CREATE TABLE `accounts` (
+  `id` int(6) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `persentage` int(3) DEFAULT '0' COMMENT 'Persentase Pembagian Hasil',
+  `flow` int(1) DEFAULT NULL COMMENT 'Jika 1  = Saldo Sistem,\nJika 2 = Persentase Bagi hasil',
+  `saldo` float(15,0) DEFAULT '0' COMMENT 'saldo awal account',
+  `saldo_date` datetime DEFAULT NULL COMMENT 'tanggal mulai saldo awal\n',
+  `saldo_realtime` float DEFAULT '0' COMMENT 'saldo realtime transaksi',
+  `saldo_realtime_date` datetime DEFAULT NULL COMMENT 'tanggal saldo realtime update',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `created_by` int(6) DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_by` int(6) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `accounts`
+-- ----------------------------
+BEGIN;
+INSERT INTO `accounts` VALUES ('1', 'My Wallet', '100', '1', '0', '2017-10-10 22:26:53', '500000', '2017-10-10 16:11:41', '2017-10-10 22:27:04', '1', '2017-10-10 16:11:41', '1');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `activity_log`
@@ -38,13 +67,13 @@ CREATE TABLE `activity_log` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 --  Records of `activity_log`
 -- ----------------------------
 BEGIN;
-INSERT INTO `activity_log` VALUES ('1', '1', 'Website Gallery', '2', 'Update', 'Data Not Found', '{\"status\":false,\"request\":\"2\",\"message\":\"Maaf, Data tidak ditemukan.\"}', null, null, null, null, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:55.0) Gecko/20100101 Firefox/55.0', '2017-09-28 07:01:27', '2017-09-28 07:01:27'), ('2', '1', 'Website Gallery', '2', 'Update', 'Data Not Found', '{\"status\":false,\"request\":\"2\",\"message\":\"Maaf, Data tidak ditemukan.\"}', null, null, null, null, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:55.0) Gecko/20100101 Firefox/55.0', '2017-09-28 07:01:47', '2017-09-28 07:01:47'), ('3', '1', 'Website Story Of Love', '5', 'Update', 'File Not Found', '\"media\\/storyoflove1506618141-IMG_0314 R.jpg\"', null, null, null, null, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:55.0) Gecko/20100101 Firefox/55.0', '2017-09-29 04:07:31', '2017-09-29 04:07:31'), ('4', '1', 'Website Story Of Love', '5', 'Update', 'File Not Found', '\"media\\/storyoflove1506668282-20160225072514.jpg\"', null, null, null, null, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:55.0) Gecko/20100101 Firefox/55.0', '2017-09-29 07:26:51', '2017-09-29 07:26:51'), ('5', '1', 'Template', '0', 'Update', 'Undefined variable: ImageFilesDesktop', '{\"name\":null,\"demo_url\":null,\"price_up\":null,\"price\":null,\"priview_desktop\":\"{}\",\"priview_tablet\":\"{}\",\"priview_mobile\":\"{}\"}', null, null, null, null, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:55.0) Gecko/20100101 Firefox/55.0', '2017-10-02 09:49:54', '2017-10-02 09:49:54'), ('6', '1', 'Template', '1', 'Update', 'Data kosong', '{\"status\":false,\"request\":\"1\",\"message\":\"Data kosong\"}', null, null, null, null, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:55.0) Gecko/20100101 Firefox/55.0', '2017-10-02 15:24:51', '2017-10-02 15:24:51'), ('7', '1', 'Template', '1', 'Update', 'Data kosong', '{\"status\":false,\"request\":\"1\",\"message\":\"Data kosong\"}', null, null, null, null, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:55.0) Gecko/20100101 Firefox/55.0', '2017-10-02 15:25:03', '2017-10-02 15:25:03'), ('8', '1', 'Template', '1', 'Update', 'Data kosong', '{\"status\":false,\"request\":\"1\",\"message\":\"Data kosong\"}', null, null, null, null, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:55.0) Gecko/20100101 Firefox/55.0', '2017-10-02 15:25:30', '2017-10-02 15:25:30'), ('9', '1', 'Template', '1', 'Update', 'Data kosong', '{\"status\":false,\"request\":\"1\",\"message\":\"Data kosong\"}', null, null, null, null, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:55.0) Gecko/20100101 Firefox/55.0', '2017-10-02 15:28:24', '2017-10-02 15:28:24'), ('10', '1', 'Template', '0', 'Update', 'Undefined variable: TemplateInfo', '{\"name\":null,\"demo_url\":null,\"price_up\":null,\"price\":null,\"priview_desktop\":\"null\",\"priview_tablet\":\"null\",\"priview_mobile\":\"null\"}', null, null, null, null, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:55.0) Gecko/20100101 Firefox/55.0', '2017-10-02 15:32:52', '2017-10-02 15:32:52');
+INSERT INTO `activity_log` VALUES ('1', '1', 'Setting', '1', 'Update', 'SQLSTATE[42S22]: Column not found: 1054 Unknown column \'meta_keywords\' in \'field list\' (SQL: update `settings` set `title` = asdasad, `updated_at` = 2017-10-05 09:35:13, `meta_keywords` = , `meta_description` =  where `id` = 1)', 'ada kesalahan pada saat Perubahan data', null, null, null, null, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:55.0) Gecko/20100101 Firefox/55.0', '2017-10-05 09:35:13', '2017-10-05 09:35:13'), ('2', '1', 'Confirmation Request', '16', 'Update', 'Ada kesalahan teknis pada form confirmation', 'SQLSTATE[42S22]: Column not found: 1054 Unknown column \'confirmation_type\' in \'field list\' (SQL: insert into `confirmations` (`user_id`, `website_id`, `invoice_id`, `confirmation_type`, `name`, `bank_information`, `account_of_bank`, `date_transaction`, `total`, `created_by`, `updated_by`, `updated_at`, `created_at`) values (1, 2, 16, 1, Barindra Maslo, bca, 7380317421, 2017-10-06, 500000, 1, 1, 2017-10-06 11:24:25, 2017-10-06 11:24:25))', '{\"user_id\":1,\"website_id\":2,\"invoice_id\":\"16\",\"name\":\"Barindra Maslo\",\"bank_information\":\"bca\",\"account_of_bank\":\"7380317421\",\"date_transaction\":\"06-10-2017\",\"total\":\"Rp ___.500.000\"}', null, null, null, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:56.0) Gecko/20100101 Firefox/56.0', '2017-10-06 11:24:25', '2017-10-06 11:24:25'), ('3', '1', 'Confirmation Approve', '0', 'Update', 'Ada kesalahan teknis pada Simpan cashbook/Saldo realtime', 'Call to undefined method Illuminate\\Database\\Query\\Builder::id()', '{\"debit\":500000,\"credit\":0,\"ref_id\":\"2\",\"flow\":\"I\",\"status\":1,\"date_transaction\":\"2017-10-10 15:52:53\",\"description\":\"Pembayaran Invoice 1710060016\",\"website_id\":2,\"user_id\":1,\"flag\":0,\"url\":\"http:\\/\\/localhost:8080\\/myinvitation\\/public\\/invoice\\/verified\\/16\",\"invoice_id\":16}', null, null, null, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:56.0) Gecko/20100101 Firefox/56.0', '2017-10-10 15:52:53', '2017-10-10 15:52:53'), ('4', '1', 'Confirmation Approve', '0', 'Update', 'Ada kesalahan teknis pada Simpan cashbook/Saldo realtime', 'Call to undefined method Illuminate\\Database\\Query\\Builder::id()', '{\"debit\":500000,\"credit\":0,\"ref_id\":\"2\",\"flow\":\"I\",\"status\":1,\"date_transaction\":\"2017-10-10 16:01:03\",\"description\":\"Pembayaran Invoice 1710060016\",\"website_id\":2,\"user_id\":1,\"flag\":0,\"url\":\"http:\\/\\/localhost:8080\\/myinvitation\\/public\\/invoice\\/verified\\/16\",\"invoice_id\":16}', null, null, null, '::1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:56.0) Gecko/20100101 Firefox/56.0', '2017-10-10 16:01:03', '2017-10-10 16:01:03');
 COMMIT;
 
 -- ----------------------------
@@ -74,6 +103,45 @@ CREATE TABLE `bridesmaids` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `bridesmaids` VALUES ('1', '1', '2', 'P', 'Yudi Hermawan', '1506871715-barind.jpg', '2017-10-01 15:28:35', '1', '2017-10-01 15:28:35', '1');
+COMMIT;
+
+-- ----------------------------
+--  Table structure for `cashbooks`
+-- ----------------------------
+DROP TABLE IF EXISTS `cashbooks`;
+CREATE TABLE `cashbooks` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `no_transaction` varchar(25) DEFAULT NULL,
+  `debit` float(15,0) DEFAULT '0',
+  `credit` float(15,0) DEFAULT '0',
+  `ref_id` int(11) DEFAULT '0',
+  `flow` char(1) DEFAULT NULL COMMENT '''I = masuk,\n''O'' = Keluar',
+  `status` int(11) DEFAULT NULL COMMENT 'Table Status Transaksi',
+  `date_transaction` datetime DEFAULT CURRENT_TIMESTAMP,
+  `description` text,
+  `website_id` int(11) DEFAULT '0',
+  `user_id` int(6) DEFAULT '0',
+  `flag` int(1) DEFAULT '0' COMMENT '0 = active,\n1 = inactive',
+  `inactived_at` timestamp NULL DEFAULT NULL,
+  `inactived_by` int(6) DEFAULT NULL,
+  `url` text,
+  `created_by` int(6) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_by` int(6) DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `no_transaction` (`no_transaction`),
+  KEY `ref_id` (`ref_id`),
+  KEY `website_id` (`website_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `cashbooks`
+-- ----------------------------
+BEGIN;
+INSERT INTO `cashbooks` VALUES ('1', 'BM201710100001', '500000', '0', '2', 'I', '1', '2017-10-10 16:11:41', 'Pembayaran Invoice 1710060016', '2', '1', '0', null, null, 'http://localhost:8080/myinvitation/public/invoice/verified/16', '1', '2017-10-10 16:11:41', '1', '2017-10-10 16:11:41');
 COMMIT;
 
 -- ----------------------------
@@ -112,12 +180,13 @@ CREATE TABLE `confirmations` (
   `bank_information` varchar(150) DEFAULT NULL,
   `name` varchar(150) DEFAULT NULL,
   `account_of_bank` varchar(25) DEFAULT NULL,
+  `date_transaction` date DEFAULT NULL,
   `total` float(10,0) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
-  `approved` int(1) DEFAULT '1',
+  `approved` int(1) DEFAULT '1' COMMENT '1 = pending, 2 = approved, 3 = rejected',
   `approved_by` int(11) DEFAULT NULL,
   `approved_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -129,7 +198,14 @@ CREATE TABLE `confirmations` (
   CONSTRAINT `confirmations_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `confirmations_ibfk_3` FOREIGN KEY (`confirmation_type_id`) REFERENCES `confirmation_types` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `confirmations_ibfk_4` FOREIGN KEY (`approved`) REFERENCES `status_approves` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `confirmations`
+-- ----------------------------
+BEGIN;
+INSERT INTO `confirmations` VALUES ('1', '1', '2', '16', '1', 'bca', 'Barindra Maslo', '7380317421', '2017-10-06', '500000', '2017-10-06 11:25:21', '1', '2017-10-10 09:28:10', '1', '3', null, null), ('2', '1', '2', '16', '1', 'BCA', 'Barindra', '7380317421', '2017-10-10', '500000', '2017-10-10 04:01:47', '1', '2017-10-10 16:11:41', '1', '2', '1', '2017-10-10 16:11:41');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `data_blashs`
@@ -220,13 +296,13 @@ CREATE TABLE `gallerys` (
   KEY `user_id` (`user_id`) USING BTREE,
   FULLTEXT KEY `file` (`file`),
   CONSTRAINT `key_website_id` FOREIGN KEY (`website_id`) REFERENCES `websites` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `gallerys`
 -- ----------------------------
 BEGIN;
-INSERT INTO `gallerys` VALUES ('15', '1', '2', '1506584114-20160225072514.jpg', '2017-09-28 07:35:14', '1', '2017-09-28 07:35:14', '1'), ('16', '1', '2', '1506869127-20160225072552.jpg', '2017-10-01 14:45:27', '1', '2017-10-01 14:45:27', '1');
+INSERT INTO `gallerys` VALUES ('15', '1', '2', '1506584114-20160225072514.jpg', '2017-09-28 07:35:14', '1', '2017-09-28 07:35:14', '1');
 COMMIT;
 
 -- ----------------------------
@@ -249,7 +325,14 @@ CREATE TABLE `invoice_details` (
   PRIMARY KEY (`id`),
   KEY `invoice_id` (`invoice_id`),
   CONSTRAINT `invoice_details_ibfk_1` FOREIGN KEY (`invoice_id`) REFERENCES `invoices` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `invoice_details`
+-- ----------------------------
+BEGIN;
+INSERT INTO `invoice_details` VALUES ('1', '16', 'Template Lilac', '500000', '0.00', '0', '', '500000', '2017-10-06 04:27:52', '1', '2017-10-06 04:27:52', null);
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `invoices`
@@ -259,14 +342,16 @@ CREATE TABLE `invoices` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL,
   `website_id` bigint(20) NOT NULL,
-  `invoice_number` varchar(25) NOT NULL,
+  `invoice_number` varchar(25) DEFAULT NULL,
   `domain_info` int(1) DEFAULT NULL COMMENT '1 = Subdomain, 2 = Domain',
   `domain` varchar(100) DEFAULT NULL,
   `additional_price` float(15,0) DEFAULT NULL,
   `additional_note` varchar(255) DEFAULT NULL,
   `discount` decimal(3,2) DEFAULT NULL,
-  `total` float(15,0) DEFAULT NULL,
+  `total` float(15,0) DEFAULT '0',
   `paid` enum('No','Yes') DEFAULT 'No' COMMENT 'Yes, No',
+  `date_transaction` datetime DEFAULT NULL,
+  `date_expired` datetime DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -276,9 +361,16 @@ CREATE TABLE `invoices` (
   KEY `idx_website_id` (`website_id`) USING BTREE,
   KEY `idx_user_id` (`user_id`) USING BTREE,
   FULLTEXT KEY `idx_invoice_number` (`invoice_number`),
-  CONSTRAINT `invoices_ibfk_1` FOREIGN KEY (`website_id`) REFERENCES `invoices` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `invoices_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `invoices_ibfk_1` FOREIGN KEY (`website_id`) REFERENCES `websites` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `invoices_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `invoices`
+-- ----------------------------
+BEGIN;
+INSERT INTO `invoices` VALUES ('16', '1', '2', '1710060016', '1', 'http://ambarbarind.myinvitation.id', '0', null, '0.00', '500000', 'Yes', '2017-10-06 04:27:52', '2017-10-13 04:27:52', '2017-10-06 04:27:52', '1', '2017-10-10 16:11:41', '1');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `menus`
@@ -293,13 +385,13 @@ CREATE TABLE `menus` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `menus`
 -- ----------------------------
 BEGIN;
-INSERT INTO `menus` VALUES ('1', 'Admin', 'menu/show', 'menu-view', 'fa fa-cog', '0017-07-25 14:44:00', '0017-07-25 14:44:00'), ('2', 'Website', null, 'website-menu', 'fa fa-cloud', '2017-09-16 13:51:36', '2017-09-16 13:51:58'), ('3', 'Master', null, 'master-menu-view', 'glyphicon glyphicon-hdd', '2017-10-02 08:10:05', '2017-10-02 08:10:05');
+INSERT INTO `menus` VALUES ('1', 'Admin', 'menu/show', 'menu-view', 'fa fa-cog', '0017-07-25 14:44:00', '0017-07-25 14:44:00'), ('2', 'Website', null, 'website-menu', 'fa fa-cloud', '2017-09-16 13:51:36', '2017-09-16 13:51:58'), ('3', 'Master', null, 'master-menu-view', 'glyphicon glyphicon-hdd', '2017-10-02 08:10:05', '2017-10-02 08:10:05'), ('4', 'Transaction', null, 'transaction-view', 'fa fa-th-large', '2017-10-05 11:08:39', '2017-10-05 11:08:39'), ('5', 'Undangan Email', null, 'email-menu', 'fa fa-envelope', '2017-10-11 03:32:36', '2017-10-11 03:32:36');
 COMMIT;
 
 -- ----------------------------
@@ -337,7 +429,7 @@ CREATE TABLE `permission_role` (
 --  Records of `permission_role`
 -- ----------------------------
 BEGIN;
-INSERT INTO `permission_role` VALUES ('1', '1'), ('2', '1'), ('3', '1'), ('4', '1'), ('5', '1'), ('6', '1'), ('7', '1'), ('8', '1'), ('9', '1'), ('10', '1'), ('11', '1'), ('12', '1'), ('13', '1'), ('14', '1'), ('15', '1'), ('16', '1'), ('17', '1'), ('18', '1'), ('19', '1'), ('20', '1'), ('21', '1'), ('22', '1'), ('23', '1'), ('24', '1'), ('25', '1'), ('26', '1'), ('27', '1'), ('28', '1'), ('29', '1'), ('30', '1');
+INSERT INTO `permission_role` VALUES ('1', '1'), ('2', '1'), ('3', '1'), ('4', '1'), ('5', '1'), ('6', '1'), ('7', '1'), ('8', '1'), ('9', '1'), ('10', '1'), ('11', '1'), ('12', '1'), ('13', '1'), ('14', '1'), ('15', '1'), ('16', '1'), ('17', '1'), ('18', '1'), ('19', '1'), ('20', '1'), ('21', '1'), ('22', '1'), ('23', '1'), ('24', '1'), ('25', '1'), ('26', '1'), ('27', '1'), ('28', '1'), ('29', '1'), ('30', '1'), ('31', '1'), ('32', '1'), ('33', '1'), ('34', '1'), ('35', '1'), ('36', '1'), ('37', '1'), ('38', '1'), ('22', '2'), ('23', '2'), ('30', '2'), ('33', '2'), ('34', '2');
 COMMIT;
 
 -- ----------------------------
@@ -354,13 +446,13 @@ CREATE TABLE `permissions` (
   `parent_id` int(10) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `permissions_name_unique` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 --  Records of `permissions`
 -- ----------------------------
 BEGIN;
-INSERT INTO `permissions` VALUES ('1', 'permission-add', 'Permission Add', 'Access to add Permission', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('2', 'permission-edit', 'Permission Edit', 'access to edit Permission', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('3', 'permission-delete', 'Permission Delete', 'Access to delete Permission', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('4', 'permission-view', 'Permission View', 'Access to view Permission form', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('5', 'role-view', 'Role View', 'Access to view Role Page', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('6', 'role-add', 'Role Add', 'Access to add Role', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('7', 'role-edit', 'Role Edit', 'Access to edit Role', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('8', 'role-delete', 'Role Delete', 'Access to delete Role', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('9', 'menu-view', 'Menu View', 'Access to View Page Menu', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('10', 'menu-add', 'Menu Add', 'Access to form add menu', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('11', 'menu-edit', 'Menu Edit', 'Access to Edit Menu Form', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('12', 'menu-delete', 'Menu Delete', 'Access to Delete Menu', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('13', 'submenu-view', 'Submenu View', 'Access to View Submenu', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('14', 'submenu-add', 'Submenu Add', 'Access to Add Form Submenu', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('15', 'submenu-edit', 'Submenu Edit', 'Access to Edit Submenu', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('16', 'submenu-delete', 'Submenu Delete', 'Access to Delete Submenu', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('17', 'user-view', 'Access to View User Menu', 'Access to View User Menu', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('18', 'thirdmenu-view', 'Thirdmenu View', 'Access to view Thirdmenu', '2017-08-21 14:17:29', '2017-08-21 14:17:55', '0'), ('19', 'thirdmenu-add', 'Thirdmenu Add', 'Access to Add New Thirdmenu', '2017-08-21 14:18:25', '2017-08-22 04:08:32', '18'), ('20', 'thirdmenu-edit', 'Thirdmenu Edit', 'Access to Edit Thirdmenu', '2017-08-21 14:18:56', '2017-08-22 04:08:51', '18'), ('21', 'thirdmenu-delete', 'Thirdmenu Delete', 'Access to Delete Thirdmenu', '2017-08-21 14:19:32', '2017-08-22 04:09:14', '18'), ('22', 'website-menu', 'Website Menu', 'Website Menu', '2017-09-16 13:11:42', '2017-09-16 13:11:42', '0'), ('23', 'website-createnew', 'Create New Website', 'Create New Website', '2017-09-16 13:14:52', '2017-09-16 13:14:52', '22'), ('24', 'master-menu-view', 'Menu Master', 'Menu Master', '2017-10-02 08:07:31', '2017-10-02 08:07:31', '0'), ('25', 'template-view', 'Template View', 'Template View', '2017-10-02 08:07:52', '2017-10-02 08:07:52', '0'), ('26', 'template-add', 'Add Template', 'Add Template', '2017-10-02 08:08:20', '2017-10-02 08:08:20', '25'), ('27', 'template-edit', 'Edit Template', 'Edit Template', '2017-10-02 08:08:40', '2017-10-02 08:08:40', '25'), ('28', 'template-inactive', 'Inactive Template', 'Inactive Template', '2017-10-02 08:09:00', '2017-10-02 08:09:00', '25'), ('29', 'template-delete', 'Delete Template', 'Delete Template', '2017-10-02 08:09:18', '2017-10-02 08:09:18', '25'), ('30', 'website-manage', 'Manage Website', 'Manage Website', '2017-10-04 07:35:08', '2017-10-04 07:36:59', '22');
+INSERT INTO `permissions` VALUES ('1', 'permission-add', 'Permission Add', 'Access to add Permission', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('2', 'permission-edit', 'Permission Edit', 'access to edit Permission', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('3', 'permission-delete', 'Permission Delete', 'Access to delete Permission', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('4', 'permission-view', 'Permission View', 'Access to view Permission form', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('5', 'role-view', 'Role View', 'Access to view Role Page', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('6', 'role-add', 'Role Add', 'Access to add Role', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('7', 'role-edit', 'Role Edit', 'Access to edit Role', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('8', 'role-delete', 'Role Delete', 'Access to delete Role', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('9', 'menu-view', 'Menu View', 'Access to View Page Menu', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('10', 'menu-add', 'Menu Add', 'Access to form add menu', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('11', 'menu-edit', 'Menu Edit', 'Access to Edit Menu Form', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('12', 'menu-delete', 'Menu Delete', 'Access to Delete Menu', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('13', 'submenu-view', 'Submenu View', 'Access to View Submenu', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('14', 'submenu-add', 'Submenu Add', 'Access to Add Form Submenu', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('15', 'submenu-edit', 'Submenu Edit', 'Access to Edit Submenu', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('16', 'submenu-delete', 'Submenu Delete', 'Access to Delete Submenu', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('17', 'user-view', 'Access to View User Menu', 'Access to View User Menu', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0'), ('18', 'thirdmenu-view', 'Thirdmenu View', 'Access to view Thirdmenu', '2017-08-21 14:17:29', '2017-08-21 14:17:55', '0'), ('19', 'thirdmenu-add', 'Thirdmenu Add', 'Access to Add New Thirdmenu', '2017-08-21 14:18:25', '2017-08-22 04:08:32', '18'), ('20', 'thirdmenu-edit', 'Thirdmenu Edit', 'Access to Edit Thirdmenu', '2017-08-21 14:18:56', '2017-08-22 04:08:51', '18'), ('21', 'thirdmenu-delete', 'Thirdmenu Delete', 'Access to Delete Thirdmenu', '2017-08-21 14:19:32', '2017-08-22 04:09:14', '18'), ('22', 'website-menu', 'Website Menu', 'Website Menu', '2017-09-16 13:11:42', '2017-09-16 13:11:42', '0'), ('23', 'website-createnew', 'Create New Website', 'Create New Website', '2017-09-16 13:14:52', '2017-09-16 13:14:52', '22'), ('24', 'master-menu-view', 'Menu Master', 'Menu Master', '2017-10-02 08:07:31', '2017-10-02 08:07:31', '0'), ('25', 'template-view', 'Template View', 'Template View', '2017-10-02 08:07:52', '2017-10-02 08:07:52', '0'), ('26', 'template-add', 'Add Template', 'Add Template', '2017-10-02 08:08:20', '2017-10-02 08:08:20', '25'), ('27', 'template-edit', 'Edit Template', 'Edit Template', '2017-10-02 08:08:40', '2017-10-02 08:08:40', '25'), ('28', 'template-inactive', 'Inactive Template', 'Inactive Template', '2017-10-02 08:09:00', '2017-10-02 08:09:00', '25'), ('29', 'template-delete', 'Delete Template', 'Delete Template', '2017-10-02 08:09:18', '2017-10-02 08:09:18', '25'), ('30', 'website-manage', 'Manage Website', 'Manage Website', '2017-10-04 07:35:08', '2017-10-04 07:36:59', '22'), ('31', 'setting-view', 'Setting Project', 'Setting Project', '2017-10-05 09:11:24', '2017-10-05 09:11:24', '0'), ('32', 'setting-edit', 'Edit Setting Project', 'Edit Setting Project', '2017-10-05 09:11:50', '2017-10-05 09:11:50', '31'), ('33', 'transaction-view', 'Transaction Menu', 'Transaction Menu', '2017-10-05 11:05:32', '2017-10-05 11:05:32', '0'), ('34', 'invoice-show', 'Invoice List', 'Invoice List', '2017-10-05 11:10:06', '2017-10-05 11:10:06', '33'), ('35', 'invoice-verified-view', 'Invoice Verified View', 'Invoice Verified View', '2017-10-10 04:11:50', '2017-10-10 04:11:50', '0'), ('36', 'invoice-verified-action', 'Invoice Verified Action', 'Invoice Verified Action', '2017-10-10 04:12:31', '2017-10-10 04:12:31', '35'), ('37', 'email-menu', 'Menu Undangan Email', 'Menu Undangan Email', '2017-10-11 03:30:30', '2017-10-11 03:30:30', '0'), ('38', 'email-format-view', 'Format Undangan Email', 'Format Undangan Email', '2017-10-11 03:32:05', '2017-10-11 03:32:05', '37');
 COMMIT;
 
 -- ----------------------------
@@ -399,7 +491,7 @@ CREATE TABLE `role_user` (
 --  Records of `role_user`
 -- ----------------------------
 BEGIN;
-INSERT INTO `role_user` VALUES ('1', '1');
+INSERT INTO `role_user` VALUES ('1', '1'), ('4', '2');
 COMMIT;
 
 -- ----------------------------
@@ -415,13 +507,58 @@ CREATE TABLE `roles` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `roles_name_unique` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 --  Records of `roles`
 -- ----------------------------
 BEGIN;
-INSERT INTO `roles` VALUES ('1', 'admin', 'Admin', 'Admin', '2017-08-21 13:47:15', '2017-08-21 13:47:17');
+INSERT INTO `roles` VALUES ('1', 'admin', 'Admin', 'Admin', '2017-08-21 13:47:15', '2017-08-21 13:47:17'), ('2', 'member', 'Member', 'Member Account', '2017-10-04 10:37:19', '2017-10-04 10:37:19');
+COMMIT;
+
+-- ----------------------------
+--  Table structure for `settings`
+-- ----------------------------
+DROP TABLE IF EXISTS `settings`;
+CREATE TABLE `settings` (
+  `id` int(6) NOT NULL AUTO_INCREMENT,
+  `project_name` varchar(75) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `keywords` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `meta_keywords` varchar(255) DEFAULT NULL,
+  `meta_description` varchar(255) DEFAULT NULL,
+  `logo` text,
+  `icon` text,
+  `misi` text,
+  `visi` text,
+  `phone` varchar(25) DEFAULT NULL,
+  `mobile` varchar(25) DEFAULT NULL,
+  `whatsapp` varchar(25) DEFAULT NULL,
+  `facebook` text,
+  `twitter` text,
+  `instagram` text,
+  `address` text,
+  `linkedin` text,
+  `googleplus` text,
+  `email` varchar(75) DEFAULT NULL,
+  `developer` varchar(150) DEFAULT NULL,
+  `location` text,
+  `latitude` decimal(10,8) DEFAULT NULL,
+  `longitude` decimal(11,8) DEFAULT NULL,
+  `google_analytic` text,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `creted_by` int(6) DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `settings`
+-- ----------------------------
+BEGIN;
+INSERT INTO `settings` VALUES ('1', 'MyInvitation', 'myinvitation.id', 'wedding, online, invitation', 'Wedding Online Invitation', 'wedding, online, invitation', 'Wedding Online Invitation', '1507202689-Logo-315X315.png', '1507197823-Logo-126-x-100.png', '<p>Tessting</p>', '<p>Tessting</p>', '0251 8312163', '+6281908884313', '+6281908884313', '1', '2', '3', '<p>Bogor Baru B VII No. 7<br />\r\nBogor</p>', null, '4', 'barindra1988@gmail.com', null, 'Jalan Bogor Baru Utara, Tegallega, Bogor City, West Java, Indonesia', '-6.33000800', '106.81302700', '<script>\r\n  (function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){\r\n  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\r\n  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\r\n  })(window,document,\'script\',\'https://www.google-analytics.com/analytics.js\',\'ga\');\r\n\r\n  ga(\'create\', \'UA-106002769-1\', \'auto\');\r\n  ga(\'send\', \'pageview\');\r\n\r\n</script>', null, null, '2017-10-05 11:24:49', null);
 COMMIT;
 
 -- ----------------------------
@@ -445,6 +582,27 @@ CREATE TABLE `status_approves` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `status_approves` VALUES ('1', 'Pending', '0', '2017-08-20 22:30:33', null, null, null), ('2', 'Approved', '0', '2017-08-20 22:31:00', null, null, null), ('3', 'Rejected', '0', '2017-08-20 22:31:12', null, null, null);
+COMMIT;
+
+-- ----------------------------
+--  Table structure for `status_transactions`
+-- ----------------------------
+DROP TABLE IF EXISTS `status_transactions`;
+CREATE TABLE `status_transactions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `created_by` int(6) DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_by` int(6) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `status_transactions`
+-- ----------------------------
+BEGIN;
+INSERT INTO `status_transactions` VALUES ('1', 'Order', '2017-10-10 21:49:01', null, '2017-10-10 21:49:04', null);
 COMMIT;
 
 -- ----------------------------
@@ -494,13 +652,13 @@ CREATE TABLE `submenus` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `submenus`
 -- ----------------------------
 BEGIN;
-INSERT INTO `submenus` VALUES ('1', null, 'Add New', 'subemnu/add', 'fa fa-folder-open', '', 'submenu-add', '0017-07-25 14:56:00', '2017-08-21 15:10:46'), ('2', '1', 'Role', 'role/show', 'fa fa-cogs', '', 'role-view', '0017-07-25 14:58:00', '0017-07-25 14:58:00'), ('3', '1', 'Permission', 'permission/show', 'fa fa-unlock-alt', '', 'permission-view', '0017-07-25 15:32:00', '0017-07-25 15:32:00'), ('4', '1', 'Submenu', 'submenu/show', 'fa fa-folder-open', '', 'submenu-view', '0017-07-25 15:34:00', '0017-07-25 15:34:00'), ('5', '1', 'Thirdmenu', 'thirdmenu/show', 'fa fa-folder-open', null, 'thirdmenu-view', '2017-08-21 14:20:32', '2017-08-21 14:20:32'), ('6', '1', 'Menu', 'menu/show', 'fa fa-folder-open', null, 'menu-view', '2017-09-16 20:41:35', '2017-09-16 20:41:37'), ('7', '2', 'Create', 'website/create', 'fa fa-plus-square', null, 'website-createnew', '2017-09-16 13:53:15', '2017-09-16 13:53:15'), ('8', '3', 'Template', 'template/show', 'icon-screen-desktop', null, 'template-view', '2017-10-02 08:11:08', '2017-10-02 08:11:08'), ('9', '2', 'Manage', 'website/manage', 'fa fa-exchange', null, 'website-manage', '2017-10-04 07:35:59', '2017-10-04 07:36:21');
+INSERT INTO `submenus` VALUES ('1', null, 'Add New', 'subemnu/add', 'fa fa-folder-open', '', 'submenu-add', '0017-07-25 14:56:00', '2017-08-21 15:10:46'), ('2', '1', 'Role', 'role/show', 'fa fa-cogs', '', 'role-view', '0017-07-25 14:58:00', '0017-07-25 14:58:00'), ('3', '1', 'Permission', 'permission/show', 'fa fa-unlock-alt', '', 'permission-view', '0017-07-25 15:32:00', '0017-07-25 15:32:00'), ('4', '1', 'Submenu', 'submenu/show', 'fa fa-folder-open', '', 'submenu-view', '0017-07-25 15:34:00', '0017-07-25 15:34:00'), ('5', '1', 'Thirdmenu', 'thirdmenu/show', 'fa fa-folder-open', null, 'thirdmenu-view', '2017-08-21 14:20:32', '2017-08-21 14:20:32'), ('6', '1', 'Menu', 'menu/show', 'fa fa-folder-open', null, 'menu-view', '2017-09-16 20:41:35', '2017-09-16 20:41:37'), ('7', '2', 'Create', 'website/create', 'fa fa-plus-square', null, 'website-createnew', '2017-09-16 13:53:15', '2017-09-16 13:53:15'), ('8', '3', 'Template', 'template/show', 'icon-screen-desktop', null, 'template-view', '2017-10-02 08:11:08', '2017-10-02 08:11:08'), ('9', '2', 'Manage', 'website/manage/show', 'fa fa-exchange', null, 'website-manage', '2017-10-04 07:35:59', '2017-10-04 09:50:32'), ('10', '1', 'Setting', 'setting/show', 'fa fa-cog', null, 'setting-view', '2017-10-05 09:12:17', '2017-10-05 09:12:17'), ('11', '4', 'Invoice List', 'invoice/show', 'fa fa-file', null, 'invoice-show', '2017-10-05 11:12:47', '2017-10-05 11:12:47'), ('12', '4', 'Invoice Verified', 'invoice/verified/show', 'fa fa-check', null, 'invoice-verified-view', '2017-10-10 04:20:56', '2017-10-10 04:20:56'), ('13', '5', 'Format Undangan', 'email/format/show', 'fa fa-cog', null, 'email-format-view', '2017-10-11 03:34:01', '2017-10-11 03:34:01');
 COMMIT;
 
 -- ----------------------------
@@ -590,13 +748,13 @@ CREATE TABLE `users` (
   UNIQUE KEY `idx_user_id` (`id`) USING BTREE,
   KEY `idx_wallet` (`wallet_realtime`,`wallet_update`) USING BTREE,
   KEY `idx_up` (`up`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `users`
 -- ----------------------------
 BEGIN;
-INSERT INTO `users` VALUES ('1', 'Barindra', 'barindra1988@gmail.com', '$2y$10$TXTSsJhhNW1U61.15Y59RejS5J1utOSawNvmteDS8S3f/4HpMb26S', '1988-07-19', 'Bogor', 'Bogor Baru B VII No. 7<br>', 'BOGOR', null, null, 'iGGfV3nd91J1R9MNphfceP97BvypKOXRVnrJzQbuly84csNdhvVPUKIuflX1', null, null, '', null, null, null, null, null, null, '2017-08-20 16:11:28', null, '2017-08-22 16:33:00');
+INSERT INTO `users` VALUES ('1', 'Barindra', 'barindra1988@gmail.com', '$2y$10$TXTSsJhhNW1U61.15Y59RejS5J1utOSawNvmteDS8S3f/4HpMb26S', '1988-07-19', 'Bogor', 'Bogor Baru B VII No. 7<br>', 'BOGOR', null, null, 'vgnQrs06JbQCcJRjwUn8JyVceTPIYAQdpGLRMlUVBaf0zCAvuwlZSASHki7c', null, null, '', null, null, null, null, null, null, '2017-08-20 16:11:28', null, '2017-08-22 16:33:00'), ('4', 'Barind testing', 'testing.website1988@gmail.com', '$2y$10$Yu5b8FKfYh8MgEdCiXQmjOdMXyuCfOBigJNnt7UaZ6W9j0xcwG5Qe', null, null, null, null, null, 'dGVzdGluZy53ZWJzaXRlMTk4OEBnbWFpbC5jb20=', null, '1', null, null, '0', '2017-10-04 10:43:31', '0', '2017-10-04 10:43:31', '0', null, '2017-10-04 10:43:31', null, '2017-10-04 10:43:31');
 COMMIT;
 
 -- ----------------------------
@@ -684,13 +842,13 @@ CREATE TABLE `websites` (
   KEY `idx_user_id` (`user_id`) USING BTREE,
   KEY `idx_template_id` (`template_id`) USING BTREE,
   CONSTRAINT `key_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 --  Records of `websites`
 -- ----------------------------
 BEGIN;
-INSERT INTO `websites` VALUES ('1', '1', 'Barindra Maslo', 'Barin', 'barindra1988@gmail.com', '+6281908884313', '1988-07-19', 'Testing Barind', null, '123', '456', '789', 'Ambar Rita Swastika', 'ambar', 'ambar.swastika@gmail.com', '+6285779005817', '1988-01-13', 'Testing Ambar', null, '1234', '654', '321', '2018-02-27 15:00:00', '2018-02-27 16:00:00', 'Anjungan Jawa Tengah', 'Taman Mini', '123', '3241', '2018-02-27 19:05:00', '2018-02-27 21:05:00', 'Anjungan jawa Tengha', 'Taman Mini', '987', '654', null, null, '2017-09-27 08:35:49', '1', '2017-09-27 08:35:49', '1', null, null, null, null, null), ('2', '1', 'Barindra Maslo', 'barin', 'barindra1988@gmail.com', '+6281908884313', '1988-07-19', 'Testing barind', '1506502509-couple2.JPG', '123', '456', '789', 'Ambar Rita Swastika', 'ambar', 'ambar.swastika@gmail.com', '+6285779005817', '1988-02-13', 'Testing ambar', '1506502509-Ambar.JPG', '123', '12314', '1231231', '2018-02-27 14:55:00', '2018-02-27 15:55:00', 'Anjungan jawa tengah', 'TMII', '1231', '123131', '2018-02-27 15:55:00', '2018-02-27 15:55:00', 'Anjungan jawa tengah', 'TMII', '123', '1232131', '2', null, '2017-09-27 08:55:09', '1', '2017-10-04 06:11:43', '1', '0', null, null, '0', null), ('3', '1', 'Barindra', 'barin', 'barindra1988@gmail.com', '+6281908884313', '2017-10-04', null, null, null, null, null, 'Ambar Rita', 'ambar', 'ambar.swastika@gmail.com', '+6285779005817', '2017-10-02', null, null, null, null, null, '2017-12-07 13:40:00', '2017-12-07 13:40:00', 'TMII', null, null, null, '2017-10-31 13:40:00', '2017-10-31 13:40:00', 'TMII', null, null, null, null, null, '2017-10-04 06:39:17', '1', '2017-10-04 06:39:17', '1', '0', null, null, '0', null), ('4', '1', 'Barindra Maslo', 'barin', 'barindra1988@gmail.com', '+6281908884313', '1988-07-19', 'Testing barind', null, '123', '456', '789', 'Ambar Rita Swastika', 'ambar', 'ambar.swastika@gmail.com', '+6285779005817', '1988-02-13', 'Testing ambar', null, '123', '12314', '1231231', '2018-02-27 14:55:00', '2018-02-27 15:55:00', 'Anjungan jawa tengah', 'TMII', '1231', '123131', '2018-02-27 15:55:00', '2018-02-27 15:55:00', 'Anjungan jawa tengah', 'TMII', '123', '1232131', null, null, '2017-10-04 08:15:29', '1', '2017-10-04 08:15:29', '1', '0', null, null, '0', null);
+INSERT INTO `websites` VALUES ('1', '1', 'Barindra Maslo', 'Barin', 'barindra1988@gmail.com', '+6281908884313', '1988-07-19', 'Testing Barind', null, '123', '456', '789', 'Ambar Rita Swastika', 'ambar', 'ambar.swastika@gmail.com', '+6285779005817', '1988-01-13', 'Testing Ambar', null, '1234', '654', '321', '2018-02-27 15:00:00', '2018-02-27 16:00:00', 'Anjungan Jawa Tengah', 'Taman Mini', '123', '3241', '2018-02-27 19:05:00', '2018-02-27 21:05:00', 'Anjungan jawa Tengha', 'Taman Mini', '987', '654', null, null, '2017-09-27 08:35:49', '1', '2017-09-27 08:35:49', '1', null, null, null, null, null), ('2', '1', 'Barindra Maslo', 'barin', 'barindra1988@gmail.com', '+6281908884313', '1988-07-19', 'Testing barind', '1506502509-couple2.JPG', '123', '456', '789', 'Ambar Rita Swastika', 'ambar', 'ambar.swastika@gmail.com', '+6285779005817', '1988-02-13', 'Testing ambar', '1506502509-Ambar.JPG', '123', '12314', '1231231', '2018-02-27 14:55:00', '2018-02-27 15:55:00', 'Anjungan jawa tengah', 'TMII', '1231', '123131', '2018-02-27 15:55:00', '2018-02-27 15:55:00', 'Anjungan jawa tengah', 'TMII', '123', '1232131', '2', 'ambarbarind', '2017-09-27 08:55:09', '1', '2017-10-10 16:11:42', '1', '1', '2017-10-10 16:11:42', '1', '0', null);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
